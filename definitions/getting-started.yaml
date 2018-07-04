@@ -1,0 +1,62 @@
+swagger: '2.0'
+info:
+  x-ibm-name: getting-started
+  version: 1.0.0
+  title: getting-started
+schemes:
+  - https
+host: $(catalog.host)
+basePath: /api
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  clientIdHeader:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+  clientSecretHeader:
+    in: header
+    name: X-IBM-Client-Secret
+    type: apiKey
+security:
+  - clientIdHeader: []
+    clientSecretHeader: []
+x-ibm-configuration:
+  testable: true
+  enforced: true
+  cors:
+    enabled: true
+  catalogs:
+    apic-dev:
+      properties:
+        runtime-url: $(TARGET_URL)
+    sb:
+      properties:
+        runtime-url: 'http://localhost:4001'
+  assembly:
+    execute:
+      - invoke:
+          target-url: 'http://172.21.145.84:31963/$(request.path)$(request.search)'
+paths:
+  '/ping':
+    get:
+      tags:
+        - Ping
+      summary: Test the reachability of the microserver.
+      operationId: Ping.prototype.__findById__accessTokens
+      responses:
+        '200':
+          description: Microservice is alive
+      deprecated: false
+  '/ready':
+    get:
+      tags:
+        - Ready
+      summary: Provides the readiness of the microservice to process requests.
+      operationId: User.prototype.__get__accessTokens
+      responses:
+        '200':
+          description: Request was successful
+      deprecated: false

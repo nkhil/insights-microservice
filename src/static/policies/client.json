@@ -1,0 +1,56 @@
+{
+  "/markets/": {
+    "GET": "*"
+  },
+  "/markets/:id": {
+    "GET": "*"
+  },
+  "/clients/": {
+    "GET": "*"
+  },
+  "/clients/:id": {
+    "GET": "*",
+    "PATCH": "*",
+    "DELETE": "*"
+  },
+  "/clients/:id/revisions": {
+    "GET": "*"
+  },
+  "/clients/:id/revisions/:revisionId": {
+    "GET": "*"
+  },
+  "/providers/": {
+    "GET": "id,name,description,imageUrl,filterSchema,locations"
+  },
+  "/providers/:id": {
+    "GET": "id,name,description,imageUrl,filterSchema,locations"
+  },
+  "/rfqs/": {
+    "POST": "*",
+    "GET": "*"
+  },
+  "/rfqs/:id": {
+    "GET": "*"
+  },
+  "/rfqs/:id/status": {
+    "GET": "*"
+  },
+  "/quotes/": {
+    "GET": "*"
+  },
+  "/quotes/:id": {
+    "GET": "*"
+  },
+  "/quotes/:id/accept": {
+    "PATCH": "*"
+  },
+  "/quotes/:id/reject": {
+    "PATCH": "*"
+  },
+  "/declines/": {
+    "GET": "*"
+  },
+  "/declines/:id": {
+    "GET": "*"
+  }
+}

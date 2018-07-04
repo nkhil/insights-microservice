@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "required": [ "name" ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "Name of market",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9\u00C0-\u017F\u0621-\u064A\u0660-\u0669 .,']*$"
+    },
+    "description": {
+      "description": "Maket description",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9\u00C0-\u017F\u0621-\u064A\u0660-\u0669 .,'\"!?:;&]*$"
+    },
+    "imageUrl": {
+      "description": "Url for the image of the provider",
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean"
+    },
+    "rfqDefaultLifespan": {
+      "type": "number",
+      "minimum": 3600000
+    },
+    "rfqSchema": {
+      "description": "RFQ schema object",
+      "type": "object"
+    },
+    "quoteSchema": {
+      "description": "QUOTE schema object",
+      "type": "object"
+    },
+    "acceptanceSchema": {
+      "description": "ACCEPTANCE schema object",
+      "type": "object"
+    },
+    "completionSchema": {
+      "description": "COMPLETION schema object",
+      "type": "object"
+    }
+  }
+}

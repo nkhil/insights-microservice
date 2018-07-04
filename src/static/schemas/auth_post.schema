@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "anyOf": [
+    { "$ref": "#/definitions/user" },
+    { "$ref": "#/definitions/userAdministrators" },
+    { "$ref": "#/definitions/administrator" }
+  ],
+  "definitions": {
+    "user": {
+      "type": "object",
+      "required": [
+        "userType",
+        "userId",
+        "marketId"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "userType": {
+          "description": "The type of user",
+          "type": "string",
+          "enum": [
+            "client",
+            "provider"
+          ]
+        },
+        "userId": {
+          "description": "Unique ID of the user",
+          "type": "string",
+          "format": "uuid",
+          "minLength": 1
+        },
+        "marketId": {
+          "description": "Unique ID of the user's market",
+          "type": "string",
+          "format": "uuid",
+          "minLength": 1
+        }
+      }
+    },  
+    "userAdministrators": {
+      "type": "object",
+      "required": [
+        "userType",
+        "marketId"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "userType": {
+          "description": "The type of user",
+          "type": "string",
+          "enum": [
+            "marketAdmin",
+            "clientAdmin",
+            "providerAdmin"
+          ]
+        },
+        "marketId": {
+          "description": "Unique ID of the user's market",
+          "type": "string",
+          "format": "uuid",
+          "minLength": 1
+        }
+      }
+    },  
+    "administrator": {
+      "type": "object",
+      "required": [
+        "userType"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "userType": {
+          "description": "The type of user",
+          "type": "string",
+          "enum": [
+            "admin"
+          ]
+        }
+      }
+    }
+  }
+}
