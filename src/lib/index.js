@@ -1,4 +1,4 @@
-const metrics = require('./datadogmetrics');
+const metrics = require('./metrics');
 const schema = require('./schema');
 
 module.exports = {

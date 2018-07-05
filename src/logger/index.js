@@ -9,7 +9,7 @@ Object.defineProperty(global, '__stack', {
     Error.prepareStackTrace = (_, stack) => stack;
     const err = new Error();
     Error.captureStackTrace(err, this);
-    const stack = err.stack;
+    const { stack } = err;
     Error.prepareStackTrace = orig;
     return stack;
   }
@@ -103,6 +103,7 @@ class Logger {
       }
     };
   }
+
   static info(obj) {
     if (bunyan.INFO >= bunyanLogger._level) {
       const ns = cls.getNamespace(constants.TRACKING_NAMESPACE);

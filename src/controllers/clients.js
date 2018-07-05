@@ -1,13 +1,13 @@
 const logger = require('../logger');
 const { metrics } = require('../lib');
 const { BaseError, InternalError } = require('../errors');
-const { DAS } = require('../adapters');
+const { DASAdapter } = require('../adapters');
 
 async function create(client) {
   logger.invocation({ args: { client } });
   metrics.increment('clients');
   try {
-    const saveValue = await DAS.createClient(client);
+    const saveValue = await DASAdapter.createClient(client);
     logger.debug({ msg: 'Successfully Created Client' });
     return saveValue;
   } catch (err) {

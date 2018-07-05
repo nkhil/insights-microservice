@@ -1,5 +1,5 @@
-const DAS = require('./DAS');
+const DASAdapter = require('./DASAdapter');
 
 module.exports = {
-  DAS
+  DASAdapter
 };

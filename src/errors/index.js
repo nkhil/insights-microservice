@@ -16,7 +16,9 @@ class UnauthorizedError extends BaseError {}
 class ConflictError extends BaseError {}
 
 class RESTError {
-  constructor({ message, status, errors, description }) {
+  constructor({
+    message, status, errors, description
+  }) {
     this.message = message;
     this.status = status;
     this.errors = errors;

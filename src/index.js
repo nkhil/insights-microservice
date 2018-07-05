@@ -1,7 +1,8 @@
 const tracer = require('dd-trace');
 const express = require('express');
-
 const bodyParser = require('body-parser');
+
+const { metrics } = require('./lib');
 const middlewares = require('./middlewares');
 const routers = require('./routers');
 
@@ -34,5 +35,7 @@ app.use('/clients', routers.clients);
 // post controller middleware
 app.use(middlewares.defaultErrorHandler());
 app.use(middlewares.logsClose());
+
+app.on('close', () => metrics.close());
 
 module.exports = app;

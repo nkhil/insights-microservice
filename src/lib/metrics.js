@@ -1,6 +1,6 @@
+const StatsD = require('hot-shots');
 const logger = require('../logger');
 const config = require('../config');
-const StatsD = require('hot-shots');
 
 const metrics = new StatsD({
   host: config.metrics.dogStatsHost,
