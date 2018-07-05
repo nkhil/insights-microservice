@@ -1,0 +1,4 @@
+#!/bin/sh
+export ENV_NAME=dev
+envsubst < ../kubernetes.yaml | kubectl apply -f -
+envsubst < ./kubernetes.yaml | kubectl apply -f -

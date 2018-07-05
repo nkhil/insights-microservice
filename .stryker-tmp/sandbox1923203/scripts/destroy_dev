@@ -1,0 +1,3 @@
+#!/bin/sh
+export ENV_NAME=dev
+envsubst < k8s/deployment.yml | kubectl delete -f -

@@ -1,0 +1,6 @@
+.sonarlint
+.DS_Store
+coverage*
+node_modules*
+tests/stress/jmeter.log
+package-lock.json
