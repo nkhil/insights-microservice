@@ -4,3 +4,4 @@ coverage*
 node_modules*
 tests/stress/jmeter.log
 package-lock.json
+.stryker-tmp
