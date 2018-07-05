@@ -2,51 +2,30 @@ const express = require('express');
 const logger = require('../logger');
 const middlewares = require('../middlewares');
 const clientsController = require('../controllers/clients');
-const {
-  DuplicateError,
-  InvalidParametersError,
-  ResourceNotFoundError,
-  RESTError
-} = require('../errors');
+const { BaseError, InternalError } = require('../errors');
 
 const router = express.Router();
 
 router.post('/',
   middlewares.schemaCheck('clients_post'),
   async (req, res, next) => {
-    const { err, data } = await clientsController.create(req.body);
-    if (err) {
-      let error = err;
-      logger.debug({ message: 'error from clients controller' });
-      if (err instanceof DuplicateError) {
-        error = new RESTError({
-          message: 'Conflict',
-          description: 'Duplicate Client Name',
-          status: 409
-        });
+    try {
+      const client = await clientsController.create(req.body);
+      // set response code/location/data
+      res.status(201).location(`/clients/${client.id}`).json(client);
+      return next();
+    } catch (err) {
+      if (err instanceof BaseError) {
+        // debug as error captured at clients controller.
+        logger.debug({ msg: 'Error From Clients Controller' });
+        next(err);
       }
-      return next(error);
+      // it's important to put the error/message into the object as err/msg here.
+      // errors are logged when they occur
+      logger.error({ err, msg: 'Unhandled Error From Clients Controller' });
+      // if we reach this point we return internal error
+      return next(new InternalError());
     }
-    res.status(201).location(`/clients/${data.id}`).json(data);
-    return next();
-  });
-
-router.get('/:id',
-  async (req, res, next) => {
-    const { err, data } = await clientsController.get({ id: req.params.id });
-    if (err) {
-      logger.debug({ message: 'error from clients controller' });
-      let error = err;
-      if (error instanceof InvalidParametersError) {
-        error = new RESTError({ message: 'Bad Request', description: 'ID must be a uuid/v4', status: 400 });
-      }
-      if (error instanceof ResourceNotFoundError) {
-        error = new RESTError({ message: 'Resource Not Found', description: `Client with id: ${req.params.id} not found`, status: 404 });
-      }
-      return next(error);
-    }
-    res.status(200).json(data);
-    return next();
   });
 
 module.exports = router;
