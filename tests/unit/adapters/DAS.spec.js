@@ -9,7 +9,7 @@ chai.should();
 
 describe('DAS Adapter', () => {
   describe('#createClient', () => {
-    context('success', () => {
+    context('SUCCESS: 200 response', () => {
       beforeEach(() => {
         this.createdUser = { id: 1 };
         nock(config.DAS.url)
@@ -21,7 +21,7 @@ describe('DAS Adapter', () => {
         data.should.eql(this.createdUser);
       });
     });
-    context('400 response', () => {
+    context('ERROR: 400 response', () => {
       beforeEach(() => {
         this.createdUser = { id: 1 };
         nock(config.DAS.url)
@@ -37,7 +37,7 @@ describe('DAS Adapter', () => {
         }
       });
     });
-    context('409 response', () => {
+    context('ERROR: 409 response', () => {
       beforeEach(() => {
         this.createdUser = { id: 1 };
         nock(config.DAS.url)
@@ -53,7 +53,7 @@ describe('DAS Adapter', () => {
         }
       });
     });
-    context('Other Error response', () => {
+    context('ERROR: other response', () => {
       beforeEach(() => {
         this.createdUser = { id: 1 };
         nock(config.DAS.url)

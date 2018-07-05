@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@spokedev/fab_logger": "0.0.1",
-    "@spokedev/fab_schema_validator": "^1.0.1",
+    "@spokedev/fab_schema_validator": "^1.0.2",
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
     "dd-trace": "^0.3.1",

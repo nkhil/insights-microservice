@@ -1,12 +1,72 @@
 const chai = require('chai');
+const nock = require('nock');
+
+const config = require('../../../src/config');
+const clientController = require('../../../src/controllers/clients');
+const { InvalidParameterError, DuplicateError, ServerError } = require('../../../src/errors');
 
 chai.should();
 
 describe('Client Controller', () => {
   describe('#createClient', () => {
-    context('success', () => {
+    context('SUCCESS: 200 response', () => {
+      beforeEach(() => {
+        this.createdUser = { id: 1 };
+        nock(config.DAS.url)
+          .post('/clients')
+          .reply(200, this.createdUser);
+      });
       it('should create a client', async () => {
-        true.should.equal(true);
+        const data = await clientController.create({ name: 'testClient' });
+        data.should.eql(this.createdUser);
+      });
+    });
+    context('ERROR: 400 response', () => {
+      beforeEach(() => {
+        this.createdUser = { id: 1 };
+        nock(config.DAS.url)
+          .post('/clients')
+          .reply(400, {});
+      });
+      it('should return an InvalidParametersError', async () => {
+        try {
+          await clientController.create({ name: 'testClient' });
+          throw new Error();
+        } catch (err) {
+          err.should.be.instanceOf(InvalidParameterError);
+        }
+      });
+    });
+    context('ERROR: 409 response', () => {
+      beforeEach(() => {
+        this.createdUser = { id: 1 };
+        nock(config.DAS.url)
+          .post('/clients')
+          .reply(409, {});
+      });
+      it('should return an ConflictError', async () => {
+        try {
+          await clientController.create({ name: 'testClient' });
+          throw new Error();
+        } catch (err) {
+          err.should.be.instanceOf(DuplicateError);
+        }
+      });
+    });
+    context('ERROR: other response', () => {
+      beforeEach(() => {
+        this.createdUser = { id: 1 };
+        nock(config.DAS.url)
+          .post('/clients')
+          .reply(403, {});
+      });
+      it('should return an InternalError', async () => {
+        try {
+          await clientController.create({ name: 'testClient' });
+          throw new Error();
+        } catch (err) {
+          err.should.be.instanceOf(ServerError);
+        }
       });
     });
   });

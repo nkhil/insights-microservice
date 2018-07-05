@@ -2,7 +2,7 @@ const express = require('express');
 const { logger } = require('@spokedev/fab_logger');
 const middlewares = require('../middlewares');
 const clientsController = require('../controllers/clients');
-const { BaseError, InternalError } = require('../errors');
+const { BaseError, ServerError } = require('../errors');
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ router.post('/',
       // errors are logged when they occur
       logger.error({ err, msg: 'Unhandled Error From Clients Controller' });
       // if we reach this point we return internal error
-      return next(new InternalError());
+      return next(new ServerError());
     }
   });
 
