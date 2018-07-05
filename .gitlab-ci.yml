@@ -29,24 +29,6 @@ style:
   script:
     - npm run lint
 
-integration:
-  stage: test
-  image: node:8.10.0
-  services:
-      - name: postgres:9.6.6-alpine
-        alias: db
-  dependencies:
-    - install
-  variables:
-    DATABASE_HOST: db
-    DATABASE_PORT: 5432
-    DATABASE_USER: erebus
-    DATABASE_NAME: erebus
-  script:
-    - npm run db:init
-    - npm run db:migrate
-    - npm run test:integration
-
 # publish:
 #   image: docker:latest
 #   services:
