@@ -1,6 +1,6 @@
 const express = require('express');
 const logger = require('../logger');
-const { clientsController } = require('../controllers');
+const clientsController = require('../controllers/clients');
 const {
   DuplicateError,
   InvalidParametersError,
