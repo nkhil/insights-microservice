@@ -1,13 +1,11 @@
 const chai = require('chai');
 const nock = require('nock');
-const chaiAsPromised = require('chai-as-promised');
 
 const config = require('../../../src/config');
 const DASAdapter = require('../../../src/adapters/DASAdapter');
 const { InvalidParameterError, DuplicateError, ServerError } = require('../../../src/errors');
 
 chai.should();
-chai.use(chaiAsPromised);
 
 describe('DAS Adapter', () => {
   describe('#createClient', () => {

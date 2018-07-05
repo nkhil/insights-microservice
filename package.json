@@ -13,8 +13,8 @@
   "dependencies": {
     "@spokedev/fab_logger": "0.0.1",
     "@spokedev/fab_schema_validator": "^1.0.1",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
-    "chai-as-promised": "^7.1.1",
     "dd-trace": "^0.3.1",
     "express": "^4.16.3",
     "hot-shots": "^5.6.2",
