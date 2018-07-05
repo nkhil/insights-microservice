@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "ajv": "^5.5.2",
-    "aws-sdk": "^2.234.1",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "bunyan": "^1.8.12",
@@ -21,10 +20,6 @@
     "express": "^4.16.3",
     "express-partial-response": "^0.3.4",
     "hot-shots": "^5.6.2",
-    "json-mask": "^0.3.8",
-    "jsonwebtoken": "^8.2.1",
-    "knex": "^0.14.6",
-    "pg": "^7.4.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "string-to-stream": "^1.1.0",
