@@ -1,8 +1,3 @@
-variables:
-  DOCKER_DRIVER: overlay2
-  IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
-  IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
-
 stages:
   - install
   - test
@@ -34,32 +29,19 @@ style:
   script:
     - npm run lint
 
-build:
-  image: docker:latest
-  services:
-   - docker:dind
-  stage: publish
-  script:
-    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
-    - docker build -t ${IMAGE_TRANSIENT} .
-    - docker push ${IMAGE_TRANSIENT}
-  only:
-    - /^v\d+\.\d+\.\d+$/
-  except:
-    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
-
-publish:
-  stage: publish
-  services:
-    - name: docker:dind
-  script:
-    - docker pull ${IMAGE_TRANSIENT}
-    - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
-    - docker push ${IMAGE_RELEASE}
-  only:
-    - /^v\d+\.\d+\.\d+$/
-  except:
-    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+# publish:
+#   image: docker:latest
+#   services:
+#    - docker:dind
+#   stage: publish
+#   script:
+#     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
+#     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME} .
+#     - docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME}
+#   only:
+#     - /^v\d+\.\d+\.\d+$/
+#   except:
+#     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
 deploy_dev:
   stage: deploy
