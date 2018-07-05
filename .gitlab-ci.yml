@@ -29,6 +29,24 @@ style:
   script:
     - npm run lint
 
+integration:
+  stage: test
+  image: node:8.10.0
+  services:
+      - name: postgres:9.6.6-alpine
+        alias: db
+  dependencies:
+    - install
+  variables:
+    DATABASE_HOST: db
+    DATABASE_PORT: 5432
+    DATABASE_USER: erebus
+    DATABASE_NAME: erebus
+  script:
+    - npm run db:init
+    - npm run db:migrate
+    - npm run test:integration
+
 # publish:
 #   image: docker:latest
 #   services:
@@ -43,34 +61,49 @@ style:
 #   except:
 #     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
-deploy_dev:
-  stage: deploy
-  image: spokedev/whale:latest
+publish_dev:
+  image: docker:latest
   services:
-    - name: docker:dind
+   - docker:dind
+  stage: publish
   script:
-    - scripts/deploy_dev
-  when: manual
-  environment:
-    name: dev
-    on_stop: destroy_dev
+    - export ENV_NAME=erebusdev
+    - "./scripts/deploy"
   only:
-    - /^v\d+\.\d+\.\d+$/
-  except:
-    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+    - master
+  artifacts:
+    paths:
+    - deployment-erebusdev.yaml
+    expire_in: 5 yrs
 
-destroy_dev:
-  stage: deploy
-  image: spokedev/whale:latest
+
+publish_staging:
+  image: docker:latest
   services:
-    - name: docker:dind
+   - docker:dind
+  stage: publish
   script:
-    - scripts/destroy_dev
-  when: manual
-  environment:
-    name: dev
-    action: stop
+    - export ENV_NAME=erebusstaging
+    - ./scripts/deploy
   only:
-    - /^v\d+\.\d+\.\d+$/
-  except:
-    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+    - staging
+  artifacts:
+    paths:
+    - deployment-erebusstaging.yaml
+    expire_in: 5 yrs
+
+
+publish_release:
+  image: docker:latest
+  services:
+   - docker:dind
+  stage: publish
+  script:
+    - export ENV_NAME=erebus
+    - ./scripts/deploy
+  only:
+    - release
+  artifacts:
+    paths:
+    - deployment-erebus.yaml
+    expire_in: 5 yrs
