@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('../logger');
+const middlewares = require('../middlewares');
 const clientsController = require('../controllers/clients');
 const {
   DuplicateError,
@@ -11,6 +12,7 @@ const {
 const router = express.Router();
 
 router.post('/',
+  middlewares.schemaCheck('clients_post'),
   async (req, res, next) => {
     const { err, data } = await clientsController.create(req.body);
     if (err) {
