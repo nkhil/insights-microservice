@@ -20,7 +20,7 @@ install:
     expire_in: 15mins
   script:
     - npm i
-    - npm install -g sonarjs
+    - npm install sonarjs
 
 unit:
   stage: test
@@ -44,7 +44,7 @@ bugs:
   dependencies:
     - install
   script:
-    - sonarjs -h
+    - ./node_modules/.bin/sonarjs
 
 build:
   stage: build
