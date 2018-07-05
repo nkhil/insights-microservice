@@ -1,3 +1,10 @@
+image: docker:latest
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
+  IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
+
 stages:
   - install
   - test
@@ -43,49 +50,43 @@ style:
 #   except:
 #     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
-publish_dev:
-  image: docker:latest
+build:
+  stage: build
   services:
-   - docker:dind
-  stage: publish
+    - name: docker:dind
   script:
-    - export ENV_NAME=erebusdev
-    - "./scripts/deploy"
-  only:
-    - master
-  artifacts:
-    paths:
-    - deployment-erebusdev.yaml
-    expire_in: 5 yrs
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
+    - docker build -t ${IMAGE_TRANSIENT} .
+    - docker push ${IMAGE_TRANSIENT}
 
-
-publish_staging:
-  image: docker:latest
+deploy_dev:
+  stage: deploy
+  image: spokedev/whale:latest
   services:
-   - docker:dind
-  stage: publish
+    - name: docker:dind
   script:
-    - export ENV_NAME=erebusstaging
-    - ./scripts/deploy
+    - scripts/deploy_dev
+  when: manual
+  environment:
+    name: dev
+    on_stop: destroy_dev
   only:
-    - staging
-  artifacts:
-    paths:
-    - deployment-erebusstaging.yaml
-    expire_in: 5 yrs
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
-
-publish_release:
-  image: docker:latest
+destroy_dev:
+  stage: deploy
+  image: spokedev/whale:latest
   services:
-   - docker:dind
-  stage: publish
+    - name: docker:dind
   script:
-    - export ENV_NAME=erebus
-    - ./scripts/deploy
+    - scripts/destroy_dev
+  when: manual
+  environment:
+    name: dev
+    action: stop
   only:
-    - release
-  artifacts:
-    paths:
-    - deployment-erebus.yaml
-    expire_in: 5 yrs
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
