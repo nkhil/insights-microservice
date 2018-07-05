@@ -15,8 +15,5 @@ module.exports = {
     // defines the metric agent hostname
     dogStatsHost: process.env.DOGSTATS_HOST || 'localhost',
     traceAgentHost: process.env.DD_TRACE_AGENT_HOSTNAME
-  },
-  bcrypt: {
-    saltrounds: process.env.BCRYPT_SALT_ROUNDS || 10
   }
 };
