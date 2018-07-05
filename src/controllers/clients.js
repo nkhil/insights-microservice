@@ -1,44 +1,28 @@
 const logger = require('../logger');
 const { metrics } = require('../lib');
+const { BaseError, InternalError } = require('../errors');
+const { DASAdapter } = require('../adapters');
 
 async function create(client) {
-  const error = null;
-  const data = { id: 1 };
-  logger.debug(`create client ${client}`);
+  logger.invocation({ args: { client } });
   metrics.increment('clients');
-  // try {
-  //   const raw = await db('test_table').select('*');
-  //   data = raw.map(r => ({
-  //     id: r.id,
-  //     name: r.name
-  //   }));
-  // } catch (e) {
-  //   logger.error(e);
-  //   error = e.message;
-  //   metrics.increment('errors');
-  // }
-  return { error, data };
-}
-
-async function get(id) {
-  const error = null;
-  const data = { name: 'sample' };
-  logger.debug(`get client ${id}`);
-  // try {
-  //   const raw = await db('test_table').select('*');
-  //   data = raw.map(r => ({
-  //     id: r.id,
-  //     name: r.name
-  //   }));
-  // } catch (e) {
-  //   logger.error(e);
-  //   error = e.message;
-  //   metrics.increment('errors');
-  // }
-  return { error, data };
+  try {
+    const saveValue = await DASAdapter.createClient(client);
+    logger.debug({ msg: 'Successfully Created Client' });
+    return saveValue;
+  } catch (err) {
+    if (err instanceof BaseError) {
+      // debug as error logged at DAS layer.
+      logger.debug({ msg: 'Error From DAS Adapter. Returning' });
+      throw err;
+    }
+    // it's important to put the error/message into the object as err/msg here.
+    // errors are logged when they occur
+    logger.error({ err, msg: 'Unhandled Error From DAS Adapter' });
+    throw new InternalError();
+  }
 }
 
 module.exports = {
-  create,
-  get
+  create
 };

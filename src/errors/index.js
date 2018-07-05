@@ -8,14 +8,17 @@ class InvalidParametersError extends BaseError {}
 class DuplicateError extends BaseError {}
 class MissingParametersError extends BaseError {}
 class DatabaseError extends BaseError {}
-class ConnectionError extends BaseError {}
+class InternalError extends BaseError {}
 class ResourceNotFoundError extends BaseError {}
 class TokenExpiredError extends BaseError {}
 class TokenInvalidError extends BaseError {}
 class UnauthorizedError extends BaseError {}
+class ConflictError extends BaseError {}
 
 class RESTError {
-  constructor({ message, status, errors, description }) {
+  constructor({
+    message, status, errors, description
+  }) {
     this.message = message;
     this.status = status;
     this.errors = errors;
@@ -27,12 +30,13 @@ module.exports = {
   BaseError,
   InvalidParametersError,
   DuplicateError,
-  ConnectionError,
+  InternalError,
   DatabaseError,
   MissingParametersError,
   ResourceNotFoundError,
   TokenExpiredError,
   TokenInvalidError,
   UnauthorizedError,
+  ConflictError,
   RESTError
 };

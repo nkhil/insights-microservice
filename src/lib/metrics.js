@@ -1,10 +1,10 @@
+const StatsD = require('hot-shots');
 const logger = require('../logger');
 const config = require('../config');
-const StatsD = require('hot-shots');
 
 const metrics = new StatsD({
   host: config.metrics.dogStatsHost,
-  prefix: 'erebus_',
+  prefix: 'getting_started_',
   suffix: '_total',
   globalTags: { env: config.environment }
 });
