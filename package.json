@@ -1,9 +1,12 @@
 {
   "name": "getting-started-microservice",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=10.6.0"
+  },
   "scripts": {
     "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:integration": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --timeout=4000 --exit ./tests/integration/*.spec.js",
+    "test:integration": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/integration/*.feature.js",
     "test:coverage": "LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec --exit ./tests/unit/*",
     "lint": "./node_modules/.bin/eslint .",
     "audit": "./node_modules/.bin/npm-check && npm audit",
@@ -23,6 +26,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "cucumber": "^4.2.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.11.0",
