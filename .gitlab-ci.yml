@@ -1,109 +1,101 @@
+image: docker:latest
+
+before_script:
+  - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
+  IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
+
 stages:
-  - install
+  - build
   - test
   - publish
+  - deploy
 
-install:
-  stage: install
-  image: node:8.10.0
-  artifacts:
-    paths:
-      - node_modules/
-    expire_in: 15mins
+
+build:
+  stage: build
+  services:
+    - name: docker:dind
   script:
-    - npm i
+    - docker build -t ${IMAGE_TRANSIENT} .
+    - docker push ${IMAGE_TRANSIENT}
 
 unit:
   stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
+  services:
+    - name: docker:dind
   script:
-    - npm run test:unit
+    - docker run ${IMAGE_TRANSIENT} npm run test
 
 style:
   stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
-  script:
-    - npm run lint
-
-integration:
-  stage: test
-  image: node:8.10.0
   services:
-      - name: postgres:9.6.6-alpine
-        alias: db
-  dependencies:
-    - install
-  variables:
-    DATABASE_HOST: db
-    DATABASE_PORT: 5432
-    DATABASE_USER: erebus
-    DATABASE_NAME: erebus
+    - name: docker:dind
   script:
-    - npm run db:init
-    - npm run db:migrate
-    - npm run test:integration
+    - docker run ${IMAGE_TRANSIENT} npm run eslint
 
-# publish:
-#   image: docker:latest
+# integration:
+#   stage: test
+#   image: spokedev/whale:latest
 #   services:
-#    - docker:dind
-#   stage: publish
+#     - name: docker:dind
 #   script:
-#     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
-#     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME} .
-#     - docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME}
+#     - ./build/scripts/up env-integration
+#     - docker run ${IMAGE_TRANSIENT} npm run test:feature
+#     - docker run ${IMAGE_TRANSIENT} npm run test:performance
+#   after_script:
+#     - ./build/scripts/down env-integration
+#   environment:
+#     name: transient/${CI_COMMIT_SHA}
 #   only:
 #     - /^v\d+\.\d+\.\d+$/
 #   except:
 #     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
-publish_dev:
-  image: docker:latest
-  services:
-   - docker:dind
+publish:
   stage: publish
-  script:
-    - export ENV_NAME=erebusdev
-    - "./scripts/deploy"
-  only:
-    - master
-  artifacts:
-    paths:
-    - deployment-erebusdev.yaml
-    expire_in: 5 yrs
-
-
-publish_staging:
-  image: docker:latest
   services:
-   - docker:dind
-  stage: publish
+    - name: docker:dind
   script:
-    - export ENV_NAME=erebusstaging
-    - ./scripts/deploy
+    - docker pull ${IMAGE_TRANSIENT}
+    - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
+    - docker push ${IMAGE_RELEASE}
   only:
-    - staging
-  artifacts:
-    paths:
-    - deployment-erebusstaging.yaml
-    expire_in: 5 yrs
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
-
-publish_release:
-  image: docker:latest
+deploy_dev:
+  stage: deploy
+  image: spokedev/whale:latest
   services:
-   - docker:dind
-  stage: publish
+    - name: docker:dind
   script:
-    - export ENV_NAME=erebus
-    - ./scripts/deploy
+    - scripts/deploy_dev
+  when: manual
+  environment:
+    name: dev
+    on_stop: destroy_dev
   only:
-    - release
-  artifacts:
-    paths:
-    - deployment-erebus.yaml
-    expire_in: 5 yrs
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+
+destroy_dev:
+  stage: deploy
+  image: spokedev/whale:latest
+  services:
+    - name: docker:dind
+  script:
+    - scripts/destroy_dev
+  when: manual
+  environment:
+    name: dev
+    action: stop
+  only:
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
