@@ -4,7 +4,7 @@ const chaiAsPromised = require('chai-as-promised');
 
 const config = require('../../../src/config');
 const DASAdapter = require('../../../src/adapters/DASAdapter');
-const { InvalidParametersError, ConflictError, InternalError } = require('../../../src/errors');
+const { InvalidParameterError, DuplicateError, ServerError } = require('../../../src/errors');
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -35,7 +35,7 @@ describe('DAS Adapter', () => {
           await DASAdapter.createClient({ name: 'testClient' });
           throw new Error();
         } catch (err) {
-          err.should.be.instanceOf(InvalidParametersError);
+          err.should.be.instanceOf(InvalidParameterError);
         }
       });
     });
@@ -51,7 +51,7 @@ describe('DAS Adapter', () => {
           await DASAdapter.createClient({ name: 'testClient' });
           throw new Error();
         } catch (err) {
-          err.should.be.instanceOf(ConflictError);
+          err.should.be.instanceOf(DuplicateError);
         }
       });
     });
@@ -67,7 +67,7 @@ describe('DAS Adapter', () => {
           await DASAdapter.createClient({ name: 'testClient' });
           throw new Error();
         } catch (err) {
-          err.should.be.instanceOf(InternalError);
+          err.should.be.instanceOf(ServerError);
         }
       });
     });

@@ -13,6 +13,7 @@ module.exports = {
   },
   metrics: {
     // defines the metric agent hostname
-    dogStatsHost: process.env.DOGSTATS_HOST || 'localhost'
+    dogStatsHost: process.env.DOGSTATS_HOST || 'localhost',
+    traceAgentHost: process.env.DD_TRACE_AGENT_HOSTNAME
   }
 };

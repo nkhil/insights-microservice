@@ -1,9 +1,10 @@
 const rp = require('request-promise');
-const logger = require('../logger');
+const { logger } = require('@spokedev/fab_logger');
 const config = require('../config');
-const { InvalidParametersError, InternalError, ConflictError } = require('../errors');
+const { InvalidParameterError, DuplicateError, ServerError } = require('../errors');
 
 async function createClient(client) {
+  logger.invocation({ args: { client } });
   try {
     const response = await rp({
       url: `${config.DAS.url}/clients`,
@@ -11,7 +12,7 @@ async function createClient(client) {
       body: client,
       json: true
     });
-      // assume 200 response = success
+    // assume 200 response = success
     logger.info({ msg: 'Successfully Created Client' });
     return response;
   } catch (err) {
@@ -20,11 +21,11 @@ async function createClient(client) {
     // handle error cases as needed
     switch (err.statusCode) {
       case (400):
-        throw new InvalidParametersError('Invalid Params');
+        throw new InvalidParameterError('Invalid Params');
       case (409):
-        throw new ConflictError('Client Already Exists');
+        throw new DuplicateError('Client Already Exists');
       default:
-        throw new InternalError('Something Went Wrong');
+        throw new ServerError('Something Went Wrong');
     }
   }
 }

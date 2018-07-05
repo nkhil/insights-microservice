@@ -6,33 +6,29 @@
     "test:integration": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --timeout=4000 --exit ./tests/integration/*.spec.js",
     "test:coverage": "LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec --exit ./tests/unit/*",
     "lint": "./node_modules/.bin/eslint .",
-    "audit": "./node_modules/.bin/npm-check",
+    "audit": "./node_modules/.bin/npm-check && npm audit",
     "test": "npm run test:unit",
     "start": "node index.js"
   },
   "dependencies": {
-    "ajv": "^6.5.2",
-    "bluebird": "^3.5.1",
+    "@spokedev/fab_logger": "0.0.1",
+    "@spokedev/fab_schema_validator": "^1.0.1",
     "body-parser": "^1.18.2",
-    "bunyan": "^1.8.12",
     "chai-as-promised": "^7.1.1",
-    "cls-hooked": "^4.2.2",
     "dd-trace": "^0.3.1",
     "express": "^4.16.3",
     "hot-shots": "^5.6.2",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2",
-    "uuid": "^3.1.0"
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^5.0.1",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.11.0",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^5.2.0",
     "nock": "^9.4.1",
-    "npm-check": "^5.7.1",
-    "sinon": "^6.1.0"
+    "npm-check": "^5.7.1"
   }
 }

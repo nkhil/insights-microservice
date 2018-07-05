@@ -1,12 +1,17 @@
 const tracer = require('dd-trace');
 const express = require('express');
 const bodyParser = require('body-parser');
+const {
+  tracking,
+  requestInit,
+  logsClose
+} = require('@spokedev/fab_logger');
 
-const { metrics } = require('./lib');
+const config = require('./config');
 const middlewares = require('./middlewares');
 const routers = require('./routers');
 
-if (process.env.DD_TRACE_AGENT_HOSTNAME) {
+if (config.traceAgentHost) {
   tracer.init();
 }
 
@@ -17,25 +22,18 @@ app.use(bodyParser.json());
 app.use(middlewares.parseExceptionCatcher());
 
 // error handling
-app.use(middlewares.tracking());
-app.use(middlewares.requestInit());
+app.use(tracking());
+app.use(requestInit());
 
 // the health check must be before authentication
-app.get('/ping', async (req, res) => {
-  res.status(200).end();
-});
-
-app.get('/ready', async (req, res) => {
-  res.status(200).end();
-});
+app.get('/ping', async (_, res) => res.status(200).end());
+app.get('/ready', async (_, res) => res.status(200).end());
 
 // controller router
 app.use('/clients', routers.clients);
 
 // post controller middleware
 app.use(middlewares.defaultErrorHandler());
-app.use(middlewares.logsClose());
-
-app.on('close', () => metrics.close());
+app.use(logsClose());
 
 module.exports = app;

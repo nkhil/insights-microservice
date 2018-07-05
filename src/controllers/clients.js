@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const { logger } = require('@spokedev/fab_logger');
 const { metrics } = require('../lib');
 const { BaseError, InternalError } = require('../errors');
 const { DASAdapter } = require('../adapters');

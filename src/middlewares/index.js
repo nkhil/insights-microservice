@@ -1,35 +1,18 @@
-const CLS = require('cls-hooked');
-const uuid = require('uuid/v4');
-const constants = require('../constants');
-const logger = require('../logger');
-const { Schema, ValidationError, SchemaNotFoundError } = require('../lib/schema');
+const { logger } = require('@spokedev/fab_logger');
 const {
-  RESTError
-} = require('../errors');
+  Schema,
+  ValidationError,
+  SchemaNotFoundError,
+  BaseError
+} = require('@spokedev/fab_schema_validator');
 
-const tracking = CLS.createNamespace(constants.TRACKING_NAMESPACE);
+const { ServerError, InvalidParameterError } = require('../errors');
+
 const schema = new Schema(`${__dirname}/../schemas`);
 
 exports.parseExceptionCatcher = () => async (err, req, res, next) => {
   logger.info({ message: 'Unknown Error Parsing Body' });
   req.body = null;
-  next();
-};
-
-exports.tracking = () => async (req, res, next) => {
-  tracking.run(() => next());
-};
-
-exports.requestInit = () => async (req, res, next) => {
-  const requestId = req.headers[constants.CORRELATION_HEADER] || uuid();
-  const executionId = uuid();
-
-  tracking.set('requestId', requestId);
-  tracking.set('executionId', requestId);
-  res.set('x-request-id', requestId);
-
-  logger.new({ requestId, executionId });
-  logger.debug({ req });
   next();
 };
 
@@ -41,20 +24,11 @@ exports.schemaCheck = schemaName => async (req, res, next) => {
     let error;
     switch (true) {
       case (err instanceof ValidationError):
-        error = new RESTError({
-          message: 'Invalid request',
-          status: 400,
-          description: 'See Errors',
-          errors: err.errors
-        });
+        error = new InvalidParameterError('See Errors', err.errors);
         break;
       case (err instanceof SchemaNotFoundError):
         logger.debug({ name: 'middlewares', fn: 'schemacheck', message: 'schema not found' });
-        error = new RESTError({
-          message: 'Internal Server Error',
-          description: 'Unknown Error Occured',
-          status: 500
-        });
+        error = new ServerError('Schema Not Found');
         break;
       default:
         error = err;
@@ -65,29 +39,16 @@ exports.schemaCheck = schemaName => async (req, res, next) => {
   return next();
 };
 
-exports.logsClose = () => async (req, res, next) => {
-  logger.debug({ res });
-  logger.info({
-    method: req.method,
-    path: req.path,
-    status_code: res.statusCode,
-    remoteAddress: req.connection.remoteAddress,
-    remotePort: req.connection.remotePort,
-    type: 'API_CALL'
-  });
-  next();
-};
-
 exports.defaultErrorHandler = () => (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
-  if (!(err instanceof RESTError)) {
+  if (!(err instanceof BaseError)) {
     res.status(500).json({ message: 'Internal Server Error', description: 'Unknown Error Occured' });
   } else {
-    res.status(err.status).json({
+    res.status(err.statusCode).json({
       message: err.message,
-      description: err.description,
+      details: err.details,
       errors: err.errors
     });
   }
