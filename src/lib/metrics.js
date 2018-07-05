@@ -1,5 +1,5 @@
 const StatsD = require('hot-shots');
-const logger = require('../logger');
+const { logger } = require('@spokedev/fab_logger');
 const config = require('../config');
 
 const metrics = new StatsD({

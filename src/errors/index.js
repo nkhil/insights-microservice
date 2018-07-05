@@ -1,42 +1,77 @@
-class BaseError {
-  constructor(message) {
-    this.message = message || 'no message';
-  }
-}
+class BaseError extends Error {}
 
-class InvalidParametersError extends BaseError {}
-class DuplicateError extends BaseError {}
-class MissingParametersError extends BaseError {}
-class DatabaseError extends BaseError {}
-class InternalError extends BaseError {}
-class ResourceNotFoundError extends BaseError {}
-class TokenExpiredError extends BaseError {}
-class TokenInvalidError extends BaseError {}
-class UnauthorizedError extends BaseError {}
-class ConflictError extends BaseError {}
-
-class RESTError {
-  constructor({
-    message, status, errors, description
-  }) {
+class HTTPError extends BaseError {
+  constructor(message, details, statusCode) {
+    super();
     this.message = message;
-    this.status = status;
-    this.errors = errors;
-    this.description = description;
+    this.details = details;
+    this.statusCode = statusCode;
   }
 }
+
+class InvalidHTTPError extends HTTPError {
+  constructor(details) {
+    super('Invalid Request', details, 400);
+  }
+}
+
+class ForbiddenHTTPError extends HTTPError {
+  constructor(details) {
+    super('Forbidden', details, 403);
+  }
+}
+
+class NotFoundHTTPError extends HTTPError {
+  constructor(details) {
+    super('Resource Not Found', details, 404);
+  }
+}
+
+class ConflictHTTPError extends HTTPError {
+  constructor(details) {
+    super('Conflict', details, 409);
+  }
+}
+
+class InternalHTTPError extends HTTPError {
+  constructor(details) {
+    super('Internal Server Error', details, 500);
+  }
+}
+
+
+// 400s
+class InvalidParameterError extends InvalidHTTPError {
+  constructor(details, errors) {
+    super(details);
+    this.errors = errors;
+  }
+}
+
+// 403s
+class UnAuthorisedError extends ForbiddenHTTPError {}
+
+// 404s
+class NotFoundError extends NotFoundHTTPError {}
+
+// 409s
+class DuplicateError extends ConflictHTTPError {}
+
+// 500s
+class ServerError extends InternalHTTPError {}
+class DatabaseError extends InternalHTTPError {}
+class UpstreamError extends InternalHTTPError {}
 
 module.exports = {
   BaseError,
-  InvalidParametersError,
+  HTTPError,
+  InvalidParameterError,
+  UnAuthorisedError,
+  NotFoundError,
   DuplicateError,
-  InternalError,
+  ServerError,
   DatabaseError,
-  MissingParametersError,
-  ResourceNotFoundError,
-  TokenExpiredError,
-  TokenInvalidError,
-  UnauthorizedError,
-  ConflictError,
-  RESTError
+  UpstreamError
+
+
 };

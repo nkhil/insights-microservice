@@ -1,5 +1,5 @@
 const express = require('express');
-const logger = require('../logger');
+const { logger } = require('@spokedev/fab_logger');
 const middlewares = require('../middlewares');
 const clientsController = require('../controllers/clients');
 const { BaseError, InternalError } = require('../errors');
