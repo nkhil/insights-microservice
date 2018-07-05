@@ -20,7 +20,7 @@ install:
     expire_in: 15mins
   script:
     - npm i
-    - npm install sonarjs
+    - npm install -g sonarjs
 
 unit:
   stage: test
