@@ -9,11 +9,37 @@ variables:
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
 
 stages:
-  - build
+  - install
   - test
+  - build
   - publish
   - deploy
 
+install:
+  stage: install
+  image: node:8.10.0
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 15mins
+  script:
+    - npm i
+
+style:
+  stage: test
+  image: node:8.10.0
+  dependencies:
+    - install
+  script:
+    - npm run lint
+
+unit:
+  stage: test
+  image: node:8.10.0
+  dependencies:
+    - install
+  script:
+    - npm run test:unit
 
 build:
   stage: build
@@ -22,38 +48,6 @@ build:
   script:
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
-
-unit:
-  stage: test
-  services:
-    - name: docker:dind
-  script:
-    - docker run ${IMAGE_TRANSIENT} npm run test
-
-style:
-  stage: test
-  services:
-    - name: docker:dind
-  script:
-    - docker run ${IMAGE_TRANSIENT} npm run eslint
-
-# integration:
-#   stage: test
-#   image: spokedev/whale:latest
-#   services:
-#     - name: docker:dind
-#   script:
-#     - ./build/scripts/up env-integration
-#     - docker run ${IMAGE_TRANSIENT} npm run test:feature
-#     - docker run ${IMAGE_TRANSIENT} npm run test:performance
-#   after_script:
-#     - ./build/scripts/down env-integration
-#   environment:
-#     name: transient/${CI_COMMIT_SHA}
-#   only:
-#     - /^v\d+\.\d+\.\d+$/
-#   except:
-#     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
 publish:
   stage: publish
