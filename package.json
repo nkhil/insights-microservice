@@ -6,7 +6,7 @@
   },
   "scripts": {
     "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:integration": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/integration/*.feature.js",
+    "test:integration": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/integration/*/*.feature",
     "test:coverage": "LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec --exit ./tests/unit/*",
     "lint": "./node_modules/.bin/eslint .",
     "audit": "./node_modules/.bin/npm-check && npm audit",
