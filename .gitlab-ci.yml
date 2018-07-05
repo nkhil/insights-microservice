@@ -1,7 +1,15 @@
+image: docker:latest
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
+  IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
+
 stages:
   - install
   - test
-  - publish
+  - build
+#  - publish
 
 install:
   stage: install
@@ -29,6 +37,15 @@ style:
   script:
     - npm run lint
 
+build:
+  stage: build
+  services:
+    - name: docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
+    - docker build -t ${IMAGE_TRANSIENT} .
+    - docker push ${IMAGE_TRANSIENT}
+
 # publish:
 #   image: docker:latest
 #   services:
@@ -42,50 +59,3 @@ style:
 #     - /^v\d+\.\d+\.\d+$/
 #   except:
 #     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
-
-publish_dev:
-  image: docker:latest
-  services:
-   - docker:dind
-  stage: publish
-  script:
-    - export ENV_NAME=erebusdev
-    - "./scripts/deploy"
-  only:
-    - master
-  artifacts:
-    paths:
-    - deployment-erebusdev.yaml
-    expire_in: 5 yrs
-
-
-publish_staging:
-  image: docker:latest
-  services:
-   - docker:dind
-  stage: publish
-  script:
-    - export ENV_NAME=erebusstaging
-    - ./scripts/deploy
-  only:
-    - staging
-  artifacts:
-    paths:
-    - deployment-erebusstaging.yaml
-    expire_in: 5 yrs
-
-
-publish_release:
-  image: docker:latest
-  services:
-   - docker:dind
-  stage: publish
-  script:
-    - export ENV_NAME=erebus
-    - ./scripts/deploy
-  only:
-    - release
-  artifacts:
-    paths:
-    - deployment-erebus.yaml
-    expire_in: 5 yrs
