@@ -1,59 +1,52 @@
-image: docker:latest
-
-before_script:
-  - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
-
 variables:
   DOCKER_DRIVER: overlay2
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
 
 stages:
-  - build
-  # - test
+  - install
+  - test
   - publish
-  - deploy
 
+install:
+  stage: install
+  image: node:8.10.0
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 15mins
+  script:
+    - npm i
+
+unit:
+  stage: test
+  image: node:8.10.0
+  dependencies:
+    - install
+  script:
+    - npm run test:unit
+
+style:
+  stage: test
+  image: node:8.10.0
+  dependencies:
+    - install
+  script:
+    - npm run lint
 
 build:
-  stage: build
+  image: docker:latest
   services:
-    - name: docker:dind
+   - docker:dind
+  stage: publish
   script:
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
-
-# unit:
-#   stage: test
-#   services:
-#     - name: docker:dind
-#   script:
-#     - docker run ${IMAGE_TRANSIENT} npm run test
-#
-# style:
-#   stage: test
-#   services:
-#     - name: docker:dind
-#   script:
-#     - docker run ${IMAGE_TRANSIENT} npm run eslint
-#
-# integration:
-#   stage: test
-#   image: spokedev/whale:latest
-#   services:
-#     - name: docker:dind
-#   script:
-#     - ./build/scripts/up env-integration
-#     - docker run ${IMAGE_TRANSIENT} npm run test:feature
-#     - docker run ${IMAGE_TRANSIENT} npm run test:performance
-#   after_script:
-#     - ./build/scripts/down env-integration
-#   environment:
-#     name: transient/${CI_COMMIT_SHA}
-#   only:
-#     - /^v\d+\.\d+\.\d+$/
-#   except:
-#     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+  only:
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
 publish:
   stage: publish
