@@ -47,14 +47,14 @@ build:
     - docker push ${IMAGE_TRANSIENT}
 
 # publish:
-#   image: docker:latest
-#   services:
-#    - docker:dind
 #   stage: publish
+#   services:
+#     - name: docker:dind
 #   script:
 #     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
-#     - docker build -t ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME} .
-#     - docker push ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME}
+#     - docker pull ${IMAGE_TRANSIENT}
+#     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
+#     - docker push ${IMAGE_RELEASE}
 #   only:
 #     - /^v\d+\.\d+\.\d+$/
 #   except:
