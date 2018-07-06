@@ -1,9 +1,9 @@
 const chai = require('chai');
 const nock = require('nock');
+const { errors: { InvalidParameterError, DuplicateError, ServerError } } = require('@spokedev/fab_utils');
 
 const config = require('../../../src/config');
 const DASAdapter = require('../../../src/adapters/DASAdapter');
-const { InvalidParameterError, DuplicateError, ServerError } = require('../../../src/errors');
 
 chai.should();
 

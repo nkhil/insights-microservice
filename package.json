@@ -15,14 +15,13 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@spokedev/fab_logger": "0.0.1",
-    "@spokedev/fab_schema_validator": "^1.0.2",
+    "@spokedev/fab_utils": "^1.0.13",
     "bcrypt": "^2.0.1",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "dd-trace": "^0.3.1",
     "express": "^4.16.3",
-    "hot-shots": "^5.6.2",
-    "request": "^2.83.0",
+    "hot-shots": "^5.7.0",
+    "request": "^2.87.0",
     "request-promise": "^4.2.2"
   },
   "devDependencies": {

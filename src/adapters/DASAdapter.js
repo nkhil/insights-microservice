@@ -1,7 +1,8 @@
 const rp = require('request-promise');
-const { logger } = require('@spokedev/fab_logger');
+const { logger, errors } = require('@spokedev/fab_utils');
 const config = require('../config');
-const { InvalidParameterError, DuplicateError, ServerError } = require('../errors');
+
+const { InvalidParameterError, DuplicateError, ServerError } = errors;
 
 async function createClient(client) {
   logger.invocation({ args: { client } });

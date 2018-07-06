@@ -1,11 +1,13 @@
 const chai = require('chai');
 const nock = require('nock');
+const { errors: { InvalidParameterError, DuplicateError, ServerError } } = require('@spokedev/fab_utils');
+
+// this is required to initialise schemas
+require('../../../index');
 
 const config = require('../../../src/config');
 const clientRouter = require('../../../src/routers/clients');
 const helpers = require('../helpers');
-
-const { InvalidParameterError, DuplicateError, ServerError } = require('../../../src/errors');
 
 chai.should();
 

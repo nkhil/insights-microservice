@@ -1,7 +1,8 @@
-const { logger } = require('@spokedev/fab_logger');
-const { metrics } = require('../lib');
-const { BaseError, InternalError } = require('../errors');
+const { logger, errors, metrics } = require('@spokedev/fab_utils');
 const { DASAdapter } = require('../adapters');
+
+const { BaseError, InternalError } = errors;
+
 
 async function create(client) {
   logger.invocation({ args: { client } });
