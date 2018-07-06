@@ -67,12 +67,11 @@ sast:
   services:
     - docker:stable-dind
   script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
     - docker run
         --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
         --volume "$PWD:/code"
         --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/sast:latest" /app/bin/run /code
+        "registry.gitlab.com/gitlab-org/security-products/sast:11-1-stable" /app/bin/run /code
   artifacts:
     paths: [gl-sast-report.json]
 
