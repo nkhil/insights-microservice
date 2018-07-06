@@ -67,8 +67,7 @@ sast:
   services:
     - docker:stable-dind
   script:
-    - setup-docker
-    - sast
+    - ./scripts/runSast
   artifacts:
     paths: [gl-sast-report.json]
 
@@ -94,39 +93,3 @@ build:
 #     - /^v\d+\.\d+\.\d+$/
 #   except:
 #     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
-
-# ---------------------------------------------------------------------------
-
-.auto_devops: &auto_devops |
-
-function setup_docker() {
-    if ! docker info &>/dev/null; then
-      if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
-        export DOCKER_HOST='tcp://localhost:2375'
-      fi
-    fi
-  }
-
-function sast() {
-    case "$CI_SERVER_VERSION" in
-      *-ee)
-
-        # Deprecation notice for CONFIDENCE_LEVEL variable
-        if [ -z "$SAST_CONFIDENCE_LEVEL" -a "$CONFIDENCE_LEVEL" ]; then
-          SAST_CONFIDENCE_LEVEL="$CONFIDENCE_LEVEL"
-          echo "WARNING: CONFIDENCE_LEVEL is deprecated and MUST be replaced with SAST_CONFIDENCE_LEVEL"
-        fi
-
-        docker run --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}" \
-                   --volume "$PWD:/code" \
-                   --volume /var/run/docker.sock:/var/run/docker.sock \
-                   "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
-        ;;
-      *)
-        echo "GitLab EE is required"
-        ;;
-    esac
-  }
-
-before_script:
-  - *auto_devops
