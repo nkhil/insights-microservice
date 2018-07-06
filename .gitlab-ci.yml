@@ -93,3 +93,49 @@ build:
 #     - /^v\d+\.\d+\.\d+$/
 #   except:
 #     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+
+# ---------------------------------------------------------------------------
+
+.auto_devops: &auto_devops |
+  # Auto DevOps variables and functions
+  [[ "$TRACE" ]] && set -x
+  auto_database_url=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${CI_ENVIRONMENT_SLUG}-postgres:5432/${POSTGRES_DB}
+  export DATABASE_URL=${DATABASE_URL-$auto_database_url}
+  export CI_APPLICATION_REPOSITORY=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG
+  export CI_APPLICATION_TAG=$CI_COMMIT_SHA
+  export CI_CONTAINER_NAME=ci_job_build_${CI_JOB_ID}
+  export TILLER_NAMESPACE=$KUBE_NAMESPACE
+  # Extract "MAJOR.MINOR" from CI_SERVER_VERSION and generate "MAJOR-MINOR-stable" for Security Products
+  export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+
+  function sast() {
+    case "$CI_SERVER_VERSION" in
+      *-ee)
+
+        # Deprecation notice for CONFIDENCE_LEVEL variable
+        if [ -z "$SAST_CONFIDENCE_LEVEL" -a "$CONFIDENCE_LEVEL" ]; then
+          SAST_CONFIDENCE_LEVEL="$CONFIDENCE_LEVEL"
+          echo "WARNING: CONFIDENCE_LEVEL is deprecated and MUST be replaced with SAST_CONFIDENCE_LEVEL"
+        fi
+
+        docker run --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}" \
+                   --volume "$PWD:/code" \
+                   --volume /var/run/docker.sock:/var/run/docker.sock \
+                   "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
+        ;;
+      *)
+        echo "GitLab EE is required"
+        ;;
+    esac
+  }
+
+  function setup_docker() {
+    if ! docker info &>/dev/null; then
+      if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
+        export DOCKER_HOST='tcp://localhost:2375'
+      fi
+    fi
+  }
+
+before_script:
+  - *auto_devops
