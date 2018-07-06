@@ -37,6 +37,20 @@ coverage:
     - install
   script:
     - npm run test:coverage
+  artifacts:
+    paths:
+      - coverage/
+
+pages:
+  stage: build
+  dependencies:
+    - coverage
+  script:
+    - mv coverage/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 5 days
 
 style:
   stage: test
