@@ -72,7 +72,7 @@ sast:
         --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
         --volume "$PWD:/code"
         --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
+        "registry.gitlab.com/gitlab-org/security-products/sast:latest" /app/bin/run /code
   artifacts:
     paths: [gl-sast-report.json]
 
