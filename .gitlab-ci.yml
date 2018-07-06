@@ -29,6 +29,13 @@ unit:
     - install
   script:
     - npm run test:unit
+
+coverage:
+  stage: test
+  image: node:8.10.0
+  dependencies:
+    - install
+  script:
     - npm run test:coverage
 
 style:
