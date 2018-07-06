@@ -58,9 +58,11 @@ quality:
   script:
     - ./node_modules/.bin/sonarjs
 
-NodeJsScan:
+nodeJsScan:
   stage: test
   script:
+    - ls
+    - pwd
     - NodeJsScan ./src
   artifacts:
     paths: [gl-sast-report.json]
