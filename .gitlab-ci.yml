@@ -67,6 +67,7 @@ sast:
   services:
     - docker:stable-dind
   script:
+    - setup-docker
     - sast
   artifacts:
     paths: [gl-sast-report.json]
