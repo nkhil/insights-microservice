@@ -40,6 +40,7 @@ coverage:
   artifacts:
     paths:
       - coverage/
+  coverage: '/^Statements\s*:\s*([^%]+)/'
 
 pages:
   stage: build
