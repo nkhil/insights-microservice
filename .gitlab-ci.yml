@@ -63,6 +63,23 @@ nodeJsScan:
   artifacts:
     paths: [gl-sast-report.json]
 
+dependency_scanning:
+  stage: test
+  image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - docker run
+        --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
+        --volume "$PWD:/code"
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
+  artifacts:
+    paths: [gl-dependency-scanning-report.json]
+
 build:
   stage: build
   image: docker:latest
