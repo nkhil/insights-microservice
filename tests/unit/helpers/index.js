@@ -13,6 +13,10 @@ class ResponseStub {
     this.body = body;
     return this;
   }
+
+  end() {
+    return this;
+  }
 }
 
 async function testRouter(router, request) {

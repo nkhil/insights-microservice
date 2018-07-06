@@ -1,5 +1,5 @@
 const { logger, errors, metrics } = require('@spokedev/fab_utils');
-const { DASAdapter } = require('../adapters');
+const DASAdapter = require('../adapters/DASAdapter');
 
 const { BaseError, InternalError } = errors;
 
