@@ -42,17 +42,6 @@ coverage:
       - coverage/
   coverage: '/^Statements\s*:\s*([^%]+)/'
 
-pages:
-  stage: build
-  dependencies:
-    - coverage
-  script:
-    - mv coverage/ public/
-  artifacts:
-    paths:
-      - public
-    expire_in: 5 days
-
 style:
   stage: test
   image: node:8.10.0
@@ -68,6 +57,20 @@ quality:
     - install
   script:
     - ./node_modules/.bin/sonarjs
+
+sast:
+  stage: test
+  image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - setup_docker
+    - sast
+  artifacts:
+    paths: [gl-sast-report.json]
 
 build:
   stage: build
