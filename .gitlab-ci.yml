@@ -61,7 +61,7 @@ style:
   script:
     - npm run lint
 
-bugs:
+quality:
   stage: test
   image: node:8.10.0
   dependencies:
