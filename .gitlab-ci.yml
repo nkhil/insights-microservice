@@ -58,16 +58,14 @@ quality:
 
 nodeJsScan:
   stage: test
-  image: 
   script:
-    - ls
-    - pwd
     - NodeJsScan ./src
   artifacts:
     paths: [gl-sast-report.json]
 
 build:
   stage: build
+  image: docker:latest
   services:
     - name: docker:dind
   script:
