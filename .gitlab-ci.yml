@@ -81,6 +81,7 @@ dependency_scanning:
         --volume "$PWD:/code"
         --volume /var/run/docker.sock:/var/run/docker.sock
         "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
+    - if (cat ./gl-dependency-scanning-report.json | jq '. | length' > 0); then echo "Found Dependency Issues"; exit 1; fi
   artifacts:
     paths: [gl-dependency-scanning-report.json]
 
