@@ -28,7 +28,7 @@ unit:
   script:
     - npm run test:unit
 
-coverage:
+coverage: 
   stage: test
   image: node:8.10.0
   dependencies:
@@ -69,7 +69,7 @@ nodeJsScan:
 
 dependency_scanning:
   stage: test
-  image: docker:stable
+  # image: docker:stable
   variables:
     DOCKER_DRIVER: overlay2
   allow_failure: true
