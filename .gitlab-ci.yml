@@ -58,8 +58,10 @@ quality:
 
 nodeJsScan:
   stage: test
+  allow_failure: true
   script:
     - NodeJsScan ./src > ./gl-sast-report.json
+    - cat ./gl-sast-report.json
     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
   artifacts:
