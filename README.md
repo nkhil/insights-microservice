@@ -9,7 +9,7 @@ This repository provides a template for FAB microservice delivery.
 ## Usage
 
 Fork Template
-Change Project Name in package.json
+Change Project Name in package.json, API & product definitions files and deploy/deployment.yaml
 Push to repository and check pipeline passes. 
 
 
@@ -19,7 +19,7 @@ Changes are to be made in the given folders and follow the router-controller-ada
 
 All code needs test coverage!
 
-Code must 
+Code must
 
 ## Logs
 
@@ -32,7 +32,7 @@ logger.debug({ msg: 'Error From DAS Adapter. Returning' });
 
 Info messages provide production logs of non-error events
 ```
-logger.info({ msg: 'Successfully Created Client' });    
+logger.info({ msg: 'Successfully Created Client' });
 ```
 
 Error messages provide context as close to the source of an error as possible.

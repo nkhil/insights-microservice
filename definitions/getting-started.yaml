@@ -6,7 +6,7 @@ info:
 schemes:
   - https
 host: $(catalog.host)
-basePath: /api
+basePath: /gettingstarted # Must match ingress path in deploy/deployment.yaml
 consumes:
   - application/json
 produces:
@@ -38,7 +38,7 @@ x-ibm-configuration:
   assembly:
     execute:
       - invoke:
-          target-url: 'http://172.21.145.84:31963/$(request.path)$(request.search)'
+          target-url: 'http://ibm-k8s-dev-pub.spokedev.xyz$(request.path)$(request.search)'
 paths:
   '/ping':
     get:
@@ -162,4 +162,3 @@ definitions:
     required:
       - name
     additionalProperties: false
-
