@@ -9,7 +9,7 @@ spec:
   ports:
   - port: 3000
     targetPort: 3000
-    name: gettingstarted-${ENV_NAME}
+    name: http
     protocol: TCP
   selector:
     app: gettingstarted-${ENV_NAME}
@@ -39,7 +39,7 @@ spec:
         - mountPath: /opt/service-bind
           name: service-bind-volume
         ports:
-        - name: gettingstarted-${ENV_NAME}
+        - name: http
           containerPort: 3000
         resources:
           requests:
