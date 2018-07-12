@@ -2,5 +2,6 @@
 export ENV_NAME=dev
 envsubst < ./deploy/deployment.yaml | kubectl apply -f -
 apic config:set catalog=apic-catalog://us.apiconnect.ibmcloud.com/orgs/dingersjigsawxyz-fab-dev/catalogs/dev
+echo "apic login --username ${APIC_USERNAME} --password ${APIC_PASSWORD} --server us.apiconnect.ibmcloud.com"
 apic login --username ${APIC_USERNAME} --password ${APIC_PASSWORD} --server us.apiconnect.ibmcloud.com
 apic publish --catalog dev --organization dingersjigsawxyz-fab-dev --server us.apiconnect.ibmcloud.com definitions/*-product.yaml
