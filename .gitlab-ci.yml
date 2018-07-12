@@ -5,7 +5,7 @@ variables:
 
 stages:
   - install
-  - test
+  # - test
   - build
   - publish
   - deploy
