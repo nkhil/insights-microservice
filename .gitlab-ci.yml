@@ -116,7 +116,7 @@ deploy_dev:
   services:
     - name: docker:dind
   script:
-    - scripts/deploy_dev
+    - deploy/deploy_dev
   when: manual
   environment:
     name: dev
@@ -132,7 +132,7 @@ destroy_dev:
   services:
     - name: docker:dind
   script:
-    - scripts/destroy_dev
+    - deploy/destroy_dev
   when: manual
   environment:
     name: dev
