@@ -4,8 +4,8 @@ variables:
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
 
 stages:
-  - install
-  - test
+  # - install
+  # - test
   - build
   - publish
   - deploy
