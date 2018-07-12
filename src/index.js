@@ -13,8 +13,8 @@ app.use(bodyParser.json());
 app.use(middlewares.trackingInit());
 app.use(middlewares.requestInit());
 
-app.use('/', healthCheckRouter);
-app.use('/clients', clientRouter);
+app.use('/gettingstarted/', healthCheckRouter);
+app.use('/gettingstarted/clients', clientRouter);
 
 app.use(middlewares.defaultErrorHandler());
 app.use(middlewares.logsClose());
