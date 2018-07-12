@@ -7,7 +7,8 @@ stages:
   - install
   - test
   - build
-#  - publish
+  - publish
+  - deploy
 
 install:
   stage: install
@@ -28,7 +29,7 @@ unit:
   script:
     - npm run test:unit
 
-coverage: 
+coverage:
   stage: test
   image: node:8.10.0
   dependencies:
@@ -94,16 +95,47 @@ build:
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
 
-# publish:
-#   stage: publish
-#   services:
-#     - name: docker:dind
-#   script:
-#     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
-#     - docker pull ${IMAGE_TRANSIENT}
-#     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
-#     - docker push ${IMAGE_RELEASE}
-#   only:
-#     - /^v\d+\.\d+\.\d+$/
-#   except:
-#     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+publish:
+  stage: publish
+  services:
+    - name: docker:dind
+  script:
+    - docker pull ${IMAGE_TRANSIENT}
+    - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
+    - docker push ${IMAGE_RELEASE}
+  only:
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+
+deploy_dev:
+  stage: deploy
+  image: spokedev/whale:latest
+  services:
+    - name: docker:dind
+  script:
+    - scripts/deploy_dev
+  when: manual
+  environment:
+    name: dev
+    on_stop: destroy_dev
+  only:
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+
+destroy_dev:
+  stage: deploy
+  image: spokedev/whale:latest
+  services:
+    - name: docker:dind
+  script:
+    - scripts/destroy_dev
+  when: manual
+  environment:
+    name: dev
+    action: stop
+  only:
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
