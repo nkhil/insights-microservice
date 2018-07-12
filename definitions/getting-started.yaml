@@ -38,7 +38,7 @@ x-ibm-configuration:
   assembly:
     execute:
       - invoke:
-          target-url: 'http://dev.fab.spokedev.xyz$(request.path)$(request.search)'
+          target-url: 'http://gettingstarted.dev.fab.spokedev.xyz$(request.path)$(request.search)'
 paths:
   '/ping':
     get:
