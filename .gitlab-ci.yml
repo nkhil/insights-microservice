@@ -21,69 +21,69 @@ install:
     - npm i
     - npm install sonarjs
 
-unit:
-  stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
-  script:
-    - npm run test:unit
-
-coverage:
-  stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
-  script:
-    - npm run test:coverage
-  artifacts:
-    paths:
-      - coverage/
-  coverage: '/^Statements\s*:\s*([^%]+)/'
-
-style:
-  stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
-  script:
-    - npm run lint
-
-quality:
-  stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
-  script:
-    - ./node_modules/.bin/sonarjs
-
-nodeJsScan:
-  stage: test
-  allow_failure: true
-  script:
-    - NodeJsScan ./src > ./gl-sast-report.json
-    - cat ./gl-sast-report.json
-    - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
-    - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
-  artifacts:
-    paths: [gl-sast-report.json]
-
-dependency_scanning:
-  stage: test
-  image: docker:stable
-  variables:
-    DOCKER_DRIVER: overlay2
-  allow_failure: true
-  services:
-    - docker:stable-dind
-  script:
-    - docker run
-        --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
-  artifacts:
-    paths: [gl-dependency-scanning-report.json]
+# unit:
+#   stage: test
+#   image: node:8.10.0
+#   dependencies:
+#     - install
+#   script:
+#     - npm run test:unit
+#
+# coverage:
+#   stage: test
+#   image: node:8.10.0
+#   dependencies:
+#     - install
+#   script:
+#     - npm run test:coverage
+#   artifacts:
+#     paths:
+#       - coverage/
+#   coverage: '/^Statements\s*:\s*([^%]+)/'
+#
+# style:
+#   stage: test
+#   image: node:8.10.0
+#   dependencies:
+#     - install
+#   script:
+#     - npm run lint
+#
+# quality:
+#   stage: test
+#   image: node:8.10.0
+#   dependencies:
+#     - install
+#   script:
+#     - ./node_modules/.bin/sonarjs
+#
+# nodeJsScan:
+#   stage: test
+#   allow_failure: true
+#   script:
+#     - NodeJsScan ./src > ./gl-sast-report.json
+#     - cat ./gl-sast-report.json
+#     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
+#     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
+#   artifacts:
+#     paths: [gl-sast-report.json]
+#
+# dependency_scanning:
+#   stage: test
+#   image: docker:stable
+#   variables:
+#     DOCKER_DRIVER: overlay2
+#   allow_failure: true
+#   services:
+#     - docker:stable-dind
+#   script:
+#     - docker run
+#         --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
+#         --volume "$PWD:/code"
+#         --volume /var/run/docker.sock:/var/run/docker.sock
+#         "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
+#   artifacts:
+#     paths: [gl-dependency-scanning-report.json]
 
 build:
   stage: build
