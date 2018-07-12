@@ -38,7 +38,7 @@ x-ibm-configuration:
   assembly:
     execute:
       - invoke:
-          target-url: 'http://ibm-k8s-dev-pub.spokedev.xyz$(request.path)$(request.search)'
+          target-url: 'http://dev.fab.spokedev.xyz$(request.path)$(request.search)'
 paths:
   '/ping':
     get:

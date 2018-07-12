@@ -64,7 +64,7 @@ metadata:
   namespace: fab-${ENV_NAME}
 spec:
   rules:
-  - host: ibm-k8s-dev-pub.spokedev.xyz
+  - host: dev.fab.spokedev.xyz
     http:
       paths:
       - path: /gettingstarted # Must match basePath in API definition yaml
