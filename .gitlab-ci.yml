@@ -97,9 +97,11 @@ build:
 
 publish:
   stage: publish
+  image: docker:latest
   services:
     - name: docker:dind
   script:
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
     - docker pull ${IMAGE_TRANSIENT}
     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
     - docker push ${IMAGE_RELEASE}
