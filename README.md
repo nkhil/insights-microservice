@@ -8,9 +8,10 @@ This repository provides a template for FAB microservice delivery.
 
 ## Usage
 
-Fork Template
-Change Project Name in package.json, API & product definitions files and deploy/deployment.yaml
-Push to repository and check pipeline passes. 
+1. Change Project Name and path in package.json, API & product definitions files and deploy/deployment.yaml
+2. Ensure the APIC_USERNAME and APIC_PASSWORD variables have been set on the gitlab repository under Settings->CICD->Variables (see Matt if you cannot access this)
+3. Ensure that the kubernetes cluster access has been configured on the gitlab repository under Operations->Kubernetes (see Matt if you cannot access this)
+3. Push to repository and check pipeline passes. Publish and Deploy only excute upon push of a tag in format v#.#.#
 
 
 ## Rules
