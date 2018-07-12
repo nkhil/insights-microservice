@@ -91,23 +91,8 @@ build:
   services:
     - name: docker:dind
   script:
-    # - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
-
-# publish:
-#   stage: publish
-#   services:
-#     - name: docker:dind
-#   script:
-#     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
-#     - docker pull ${IMAGE_TRANSIENT}
-#     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
-#     - docker push ${IMAGE_RELEASE}
-#   only:
-#     - /^v\d+\.\d+\.\d+$/
-#   except:
-#     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
 
 publish:
   stage: publish
