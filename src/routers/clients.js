@@ -1,5 +1,5 @@
 const express = require('express');
-const { logger, middlewares, errors } = require('@spokedev/fab_utils');
+const { logger, errors } = require('@spokedev/fab_utils');
 const clientsController = require('../controllers/clients');
 
 const { BaseError, ServerError } = errors;
@@ -7,7 +7,6 @@ const { BaseError, ServerError } = errors;
 const router = express.Router();
 
 router.post('/',
-  middlewares.schemaValidator('clients_post'),
   async (req, res, next) => {
     try {
       const client = await clientsController.create(req.body);
