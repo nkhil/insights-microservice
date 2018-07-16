@@ -14,10 +14,10 @@ router.post('/',
       return next();
     } catch (err) {
       if (err instanceof BaseError) {
-        logger.debug({ msg: 'Error From Clients Controller' });
+        logger.debug({ message: 'Error From Clients Controller' });
         next(err);
       }
-      logger.error({ err, msg: 'Unhandled Error From Clients Controller' });
+      logger.error({ err, message: 'Unhandled Error From Clients Controller' });
       return next(new ServerError());
     }
   });
