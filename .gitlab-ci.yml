@@ -57,13 +57,13 @@ quality:
   script:
     - ./node_modules/.bin/sonarjs
 
-verifyDefinitions:
-  stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
-  script:
-    - apic validate definitions/getting-started-product.yaml
+# verifyDefinitions:
+#   stage: test
+#   image: node:8.10.0
+#   dependencies:
+#     - install
+#   script:
+#     - apic validate definitions/getting-started-product.yaml
 
 nodeJsScan:
   stage: test
