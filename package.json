@@ -16,7 +16,8 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@spokedev/fab_utils": "^1.0.24",
+    "@spokedev/fab_utils": "^1.0.25",
+    "apiconnect": "^2.8.14",
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "dd-trace": "^0.3.1",
