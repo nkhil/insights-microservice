@@ -107,47 +107,6 @@ paths:
               message:
                 type: string
                 title: Bad Gateway
-  '/clients/{id}':
-    get:
-      tags:
-        - Clients
-      summary: Get a specific client.
-      description: Returns the client record.
-      parameters:
-        - name: id
-          in: path
-          description: Unique identifier for the identity.
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/Client'
-        '400':
-          description: Bad Request
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                title: Bad Request
-        '500':
-          description: Internal Server Error
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                title: Internal Server Error
-        '502':
-          description: Bad Gateway
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                title: Bad Gateway
 definitions:
   Client:
     properties:

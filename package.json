@@ -1,6 +1,7 @@
 {
-  "name": "getting-started-microservice",
-  "version": "0.0.1",
+  "name": "@spokedev/getting-started-microservice",
+  "version": "0.0.3",
+  "private": true,
   "engines": {
     "node": ">=10.6.0"
   },
@@ -15,14 +16,15 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@spokedev/fab_utils": "^1.0.13",
+    "@spokedev/fab_utils": "^1.0.29",
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "dd-trace": "^0.3.1",
     "express": "^4.16.3",
     "hot-shots": "^5.7.0",
     "request": "^2.87.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "validator": "^10.4.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -32,7 +34,7 @@
     "eslint-plugin-import": "^2.11.0",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^5.2.0",
-    "nock": "^9.4.1",
+    "nock": "^9.4.2",
     "npm-check": "^5.7.1",
     "stryker": "^0.24.2",
     "stryker-api": "^0.17.3",

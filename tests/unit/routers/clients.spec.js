@@ -87,24 +87,5 @@ describe('Client Router', () => {
         }
       });
     });
-
-    context('ERROR: 400 response from schema', () => {
-      beforeEach(() => {
-        this.createdUser = { id: 1 };
-        nock(config.DAS.url)
-          .post('/clients')
-          .reply(400, {});
-      });
-
-      it('should return a 400 error', async () => {
-        try {
-          const request = { url: '/', method: 'POST', body: { nom: 'tom' } };
-          await helpers.testRouter(clientRouter, request);
-          throw new Error();
-        } catch (err) {
-          err.should.be.instanceOf(InvalidParameterError);
-        }
-      });
-    });
   });
 });
