@@ -112,6 +112,7 @@ publish:
 deploy_dev:
   stage: deploy
   image: spokedev/whale:latest
+  dependencies: []
   services:
     - name: docker:dind
   script:
