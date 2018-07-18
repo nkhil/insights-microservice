@@ -7,13 +7,16 @@
   },
   "scripts": {
     "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:integration": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/integration/*/*.feature",
-    "test:coverage": "LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec --exit ./tests/unit/*",
+    "test:unitcoverage": "LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/mocha --exit ./tests/unit/*",
+    "test:component": "TEST_MODE=COMPONENT ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
+    "test:coverage": "TEST_MODE=COMPONENT LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
+    "test:feature": "TEST_MODE=FEATURE LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
     "audit": "./node_modules/.bin/npm-check && npm audit",
     "test": "npm run test:unit",
-    "start": "node index.js"
+    "start": "node index.js",
+    "multi": "npm start & robohydra ./tests/feature/stubs/stub.conf & npm run test:feature"
   },
   "dependencies": {
     "@spokedev/fab_utils": "^1.0.29",
@@ -35,6 +38,7 @@
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^5.2.0",
     "nock": "^9.4.2",
+    "robohydra": "^0.6.6",
     "npm-check": "^5.7.1",
     "stryker": "^0.24.2",
     "stryker-api": "^0.17.3",
