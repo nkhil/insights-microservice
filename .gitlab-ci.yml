@@ -1,5 +1,4 @@
 variables:
-  DOCKER_DRIVER: overlay2
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
 
@@ -116,6 +115,7 @@ publish:
   services:
     - name: docker:dind
   script:
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
     - docker pull ${IMAGE_TRANSIENT}
     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
     - docker push ${IMAGE_RELEASE}
@@ -127,6 +127,7 @@ publish:
 deploy_dev:
   stage: deploy
   image: spokedev/whale:latest
+  dependencies: []
   services:
     - name: docker:dind
   script:
