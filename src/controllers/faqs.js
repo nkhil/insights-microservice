@@ -1,16 +1,14 @@
-const { logger, errors, metrics } = require('@spokedev/fab_utils');
-const DASAdapter = require('../adapters/DASAdapter');
+const { logger, errors } = require('@spokedev/fab_utils');
+const das = require('../adapters/DASAdapter');
 
 const { BaseError, InternalError } = errors;
 
-
-async function create(client) {
-  logger.invocation({ args: { client } });
-  metrics.increment('clients');
+async function get() {
+  logger.invocation();
   try {
-    const saveValue = await DASAdapter.createClient(client);
-    logger.debug({ message: 'Successfully Created Client' });
-    return saveValue;
+    const response = await das.getFaqs();
+    logger.debug({ message: 'Obtained faqs' });
+    return response;
   } catch (err) {
     if (err instanceof BaseError) {
       // debug as error logged at DAS layer.
@@ -25,5 +23,5 @@ async function create(client) {
 }
 
 module.exports = {
-  create
+  get
 };

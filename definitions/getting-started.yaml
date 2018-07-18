@@ -60,70 +60,37 @@ paths:
         '200':
           description: Request was successful
       deprecated: false
-  '/clients':
-    post:
+  '/faqs':
+    get:
       tags:
-        - Clients
-      summary: Create a new client.
-      description: Creates a new client record.
-      operationId: Client.create
-      parameters:
-        - in: query
-          name: limit
-          required: true
-          type: string
-          format: email
-          description: The numbers of items to return
-        - name: data
-          in: body
-          description: Client instance data
-          required: true
-          schema:
-            description: Model instance data
-            $ref: '#/definitions/Client'
+        - FAQs
+      summary: Get FAQs.
+      description: Returns a list of FAQs.
+      operationId: faqs.get
       responses:
         '200':
           description: Success
           schema:
-            type: object
-            properties:
-              code:
-                type: string
-        '400':
-          description: Bad Request
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                title: Bad Request
-        '500':
-          description: Internal Server Error
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                title: Internal Server Error
-        '502':
-          description: Bad Gateway
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                title: Bad Gateway
+            type: array
+            items:
+              $ref: '#/definitions/faq'
 definitions:
-  Client:
+  faq:
     properties:
-      name:
-        description: The name of the client
+      FAQID:
+        description: Unique faq identifier
         type: string
-        minLength: 1
-        pattern: ^[a-zA-Z0-9\u00C0-\u017F\u0621-\u064A\u0660-\u0669 .,'\"!?:;&]*$
-      description:
-        description: Short description of the client
+        format: uuid
+      question:
+        description: Question being asked
         type: string
-    required:
-      - name
-    additionalProperties: false
+      answer:
+        description: The answer to the question
+        type: string
+      lastUpdated: 
+        description: The date/time that a faq was last modified
+        type: string
+        format: datetime
+      lastUpdateBy:
+        description: The name of the user that last updated the faq
+        type: string
