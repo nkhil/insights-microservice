@@ -1,5 +1,4 @@
-// standard logger
-const { logger } = require('@spokedev/fab_utils');
+/* eslint-disable no-console */
 
 // cucumber / Gherkin and chai for test steps and assertions
 const { Given, When, Then } = require('cucumber');
@@ -22,7 +21,7 @@ Given('The Data Access Service GET FAQs is available', async () => {
   if (process.env.TEST_MODE === 'COMPONENT') {
     // in COMPONENT mode we're going to call the router directly,
     // so we need to setup the external dependencies
-    logger.info({ message: 'TEST_EXEC: Setting up DAS dependencies for component execution' });
+    console.log('TEST_EXEC: Setting up DAS dependencies for component execution');
     const response = faqsList;
     nock(config.DAS.url)
       .get('/FAQs')

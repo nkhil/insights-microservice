@@ -1,5 +1,4 @@
-// standard logger
-const { logger } = require('@spokedev/fab_utils');
+/* eslint-disable no-console */
 
 // request-promise for feature testing via API Connect
 const rp = require('request-promise');
@@ -44,14 +43,14 @@ async function get(router, url, prodUrl) {
   let response;
   if (process.env.TEST_MODE === 'COMPONENT') {
     // call the router directly
-    logger.info({ message: `TEST_EXEC: Calling the router internally at ${url}` });
+    console.log(`TEST_EXEC: Calling the router internally at ${url}`);
     const request = { url, method: 'GET' };
     response = await testRouter(router, request);
-    logger.info({ message: `TEST_EXEC: Response from router ===> ${response}` });
+    console.log('TEST_EXEC: Response from router ===>', response);
   } else {
     // call the router externally (via API connect)
     const apiUrl = prodUrl || url;
-    logger.info({ message: `TEST_EXEC: Calling the api externally via URL: ${config.APIConnect.url}${apiUrl}` });
+    console.log(`TEST_EXEC: Calling the api externally via URL: ${config.APIConnect.url}${apiUrl}`);
     response = await rp({
       url: `${config.APIConnect.url}${apiUrl}`,
       headers: {
@@ -61,7 +60,7 @@ async function get(router, url, prodUrl) {
       method: 'GET',
       resolveWithFullResponse: true
     });
-    logger.info({ message: `TEST_EXEC: Response from router ===> ${response.statusCode}, ${response.body}` });
+    console.log('TEST_EXEC: Response from router ===>', response.statusCode, response.body);
   }
   return response;
 }
