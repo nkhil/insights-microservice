@@ -1,4 +1,4 @@
-image: node:10.6.0-alpine
+image: spokedev/spoke_runner
 
 variables:
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
