@@ -42,75 +42,75 @@ component:
   except:
     - tags
 
-coverage:
-  stage: test
-  dependencies:
-    - install
-  script:
-    - npm run test:coverage
-  artifacts:
-    paths:
-      - coverage/
-  coverage: '/^Statements\s*:\s*([^%]+)/'
-  except:
-    - tags
-
-style:
-  stage: test
-  dependencies:
-    - install
-  script:
-    - npm run lint
-  except:
-    - tags
-
-quality:
-  stage: test
-  dependencies:
-    - install
-  script:
-    - ./node_modules/.bin/sonarjs
-  except:
-    - tags
-
-# verifyDefinitions:
+# coverage:
 #   stage: test
 #   dependencies:
 #     - install
 #   script:
-#     - apic validate definitions/getting-started-product.yaml
+#     - npm run test:coverage
+#   artifacts:
+#     paths:
+#       - coverage/
+#   coverage: '/^Statements\s*:\s*([^%]+)/'
 #   except:
 #     - tags
-
-nodeJsScan:
-  stage: test
-  allow_failure: true
-  script:
-    - NodeJsScan ./src > ./gl-sast-report.json
-    - cat ./gl-sast-report.json
-    - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
-    - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
-  artifacts:
-    paths: [gl-sast-report.json]
-  except:
-    - tags
-
-dependency_scanning:
-  stage: test
-  image: docker:latest
-  allow_failure: true
-  services:
-    - docker:stable-dind
-  script:
-    - docker run
-        --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
-  artifacts:
-    paths: [gl-dependency-scanning-report.json]
-  except:
-    - tags
+#
+# style:
+#   stage: test
+#   dependencies:
+#     - install
+#   script:
+#     - npm run lint
+#   except:
+#     - tags
+#
+# quality:
+#   stage: test
+#   dependencies:
+#     - install
+#   script:
+#     - ./node_modules/.bin/sonarjs
+#   except:
+#     - tags
+#
+# # verifyDefinitions:
+# #   stage: test
+# #   dependencies:
+# #     - install
+# #   script:
+# #     - apic validate definitions/getting-started-product.yaml
+# #   except:
+# #     - tags
+#
+# nodeJsScan:
+#   stage: test
+#   allow_failure: true
+#   script:
+#     - NodeJsScan ./src > ./gl-sast-report.json
+#     - cat ./gl-sast-report.json
+#     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
+#     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
+#   artifacts:
+#     paths: [gl-sast-report.json]
+#   except:
+#     - tags
+#
+# dependency_scanning:
+#   stage: test
+#   image: docker:latest
+#   allow_failure: true
+#   services:
+#     - docker:stable-dind
+#   script:
+#     - docker run
+#         --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
+#         --volume "$PWD:/code"
+#         --volume /var/run/docker.sock:/var/run/docker.sock
+#         "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
+#   artifacts:
+#     paths: [gl-dependency-scanning-report.json]
+#   except:
+#     - tags
 
 version:
   stage: test
@@ -126,6 +126,8 @@ build:
   services:
     - name: docker:dind
   script:
+    - echo ${CI_JOB_TOKEN}
+    - echo ${DOCKER_ENV_CI_REGISTRY}
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
