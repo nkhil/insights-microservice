@@ -38,7 +38,7 @@ x-ibm-configuration:
   assembly:
     execute:
       - invoke:
-          target-url: 'http://ibm-k8s-dev-pub.spokedev.xyz$(request.path)$(request.search)'
+          target-url: 'http://gettingstarted.${ENV_NAME}.fab.spokedev.xyz$(request.path)$(request.search)'
 paths:
   '/ping':
     get:
@@ -87,7 +87,7 @@ definitions:
       answer:
         description: The answer to the question
         type: string
-      lastUpdated: 
+      lastUpdated:
         description: The date/time that a faq was last modified
         type: string
         format: datetime
