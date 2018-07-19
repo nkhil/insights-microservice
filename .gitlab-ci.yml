@@ -48,6 +48,7 @@ component:
   stage: test
   services:
     - ${IMAGE_ROBOHYDRA}
+      alias: robohydra
   dependencies:
     - install
   script:
