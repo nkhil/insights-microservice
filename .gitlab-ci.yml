@@ -3,8 +3,8 @@ image: spokedev/spoke_runner
 variables:
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
-  DOCKER_HOST: tcp://localhost:2375
-  DOCKER_DRIVER: overlay2
+  # DOCKER_HOST: tcp://localhost:2375
+  # DOCKER_DRIVER: overlay2
 
 stages:
   # - install
