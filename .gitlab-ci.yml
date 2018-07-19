@@ -121,6 +121,7 @@ version:
 build:
   stage: build
   image: docker:latest
+  dependencies: []
   services:
     - name: docker:dind
   script:
@@ -144,6 +145,7 @@ publish:
   stage: publish
   services:
     - name: docker:dind
+  dependencies: []
   script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
     - docker pull ${IMAGE_TRANSIENT}
