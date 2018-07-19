@@ -5,7 +5,7 @@ LAST_TAG=`curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" https://spokedev.githost.i
 echo "THIS VERSION: v${VERSION}"
 echo "LAST TAG: ${LAST_TAG}"
 
-if [[ $LAST_TAG =~ "null" ]]
+if [[ $LAST_TAG =~ "null" ]] || [ -z $LAST_TAG ]
 then
   echo "No previous tag detected."
   exit 0
