@@ -1,17 +1,23 @@
+image: spokedev/spoke_runner
+
 variables:
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
+  IMAGE_ROBOHYDRA: ${CI_REGISTRY_IMAGE}/robohydra:latest
+
+# services:
+#   - name: ${IMAGE_ROBOHYDRA}
+#     alias: robohydra
 
 stages:
   - install
   - test
   - build
+  - tag
   - publish
-  - deploy
 
 install:
   stage: install
-  image: node:8.10.0
   artifacts:
     paths:
       - node_modules/
@@ -19,26 +25,43 @@ install:
   script:
     - npm i
     - npm install sonarjs
+  except:
+    - tags
+
+build_robohydra:
+  stage: install
+  image: docker:latest
+  services:
+    - docker:stable-dind
+  script:
+    - cd tests
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker build -t ${IMAGE_ROBOHYDRA} .
+    - docker push ${IMAGE_ROBOHYDRA}
 
 unit:
   stage: test
-  image: node:8.10.0
   dependencies:
     - install
   script:
     - npm run test:unit
+  except:
+    - tags
 
 component:
   stage: test
-  image: node:8.10.0
+  services:
+    - name: ${IMAGE_ROBOHYDRA}
+      alias: robohydra
   dependencies:
     - install
   script:
-    - npm run test:component
+    - DAS_URL=http://robohydra:4000 npm run test:component
+  except:
+    - tags
 
 coverage:
   stage: test
-  image: node:8.10.0
   dependencies:
     - install
   script:
@@ -47,30 +70,36 @@ coverage:
     paths:
       - coverage/
   coverage: '/^Statements\s*:\s*([^%]+)/'
+  except:
+    - tags
 
 style:
   stage: test
-  image: node:8.10.0
   dependencies:
     - install
   script:
     - npm run lint
+  except:
+    - tags
 
 quality:
   stage: test
-  image: node:8.10.0
   dependencies:
     - install
   script:
     - ./node_modules/.bin/sonarjs
+  except:
+    - tags
 
-# verifyDefinitions:
-#   stage: test
-#   image: node:8.10.0
-#   dependencies:
-#     - install
-#   script:
-#     - apic validate definitions/getting-started-product.yaml
+verifyDefinitions:
+  stage: test
+  image: spokedev/whale
+  dependencies:
+    - install
+  script:
+    - apic validate definitions/getting-started-product.yaml
+  except:
+    - tags
 
 nodeJsScan:
   stage: test
@@ -82,12 +111,12 @@ nodeJsScan:
     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
   artifacts:
     paths: [gl-sast-report.json]
+  except:
+    - tags
 
 dependency_scanning:
   stage: test
-  image: docker:stable
-  variables:
-    DOCKER_DRIVER: overlay2
+  image: docker:latest
   allow_failure: true
   services:
     - docker:stable-dind
@@ -99,59 +128,51 @@ dependency_scanning:
         "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
   artifacts:
     paths: [gl-dependency-scanning-report.json]
+  except:
+    - tags
+
+
+version:
+  stage: test
+  dependencies:
+    - install
+  script:
+    - ./scripts/check_version_tag.sh
 
 build:
   stage: build
   image: docker:latest
+  dependencies: []
   services:
     - name: docker:dind
   script:
-    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
+  except:
+    - tags
+
+tag:
+  stage: tag
+  image: spokedev/whale
+  dependencies:
+    - build
+  script:
+    - ./scripts/tag.sh
+  only:
+    - master
 
 publish:
   stage: publish
   services:
     - name: docker:dind
+  dependencies: []
   script:
-    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker pull ${IMAGE_TRANSIENT}
     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
     - docker push ${IMAGE_RELEASE}
-  only:
-    - /^v\d+\.\d+\.\d+$/
-  except:
-    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
-
-deploy_dev:
-  stage: deploy
-  image: spokedev/whale:latest
-  dependencies: []
-  services:
-    - name: docker:dind
-  script:
-    - scripts/deploy_dev
-  when: manual
-  environment:
-    name: dev
-    on_stop: destroy_dev
-  only:
-    - /^v\d+\.\d+\.\d+$/
-  except:
-    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
-
-destroy_dev:
-  stage: deploy
-  image: spokedev/whale:latest
-  services:
-    - name: docker:dind
-  script:
-    - scripts/destroy_dev
-  when: manual
-  environment:
-    name: dev
-    action: stop
+    - ./scripts/save_deploy_files.sh
   only:
     - /^v\d+\.\d+\.\d+$/
   except:
