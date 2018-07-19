@@ -18,15 +18,15 @@ const config = require('../../../src/config');
 chai.should();
 
 Given('The Data Access Service GET FAQs is available', async () => {
-  // if (process.env.TEST_MODE === 'COMPONENT') {
-  //   // in COMPONENT mode we're going to call the router directly,
-  //   // so we need to setup the external dependencies
-  //   console.log('TEST_EXEC: Setting up DAS dependencies for component execution');
-  //   const response = faqsList;
-  //   nock(config.DAS.url)
-  //     .get('/FAQs')
-  //     .reply(200, response);
-  // }
+  if (process.env.TEST_MODE === 'COMPONENT') {
+    // in COMPONENT mode we're going to call the router directly,
+    // so we need to setup the external dependencies
+    console.log('TEST_EXEC: Setting up DAS dependencies for component execution');
+    const response = faqsList;
+    nock(config.DAS.url)
+      .get('/FAQs')
+      .reply(200, response);
+  }
 });
 
 When('I call the Getting Started microservice GET /faqs route', async () => {
