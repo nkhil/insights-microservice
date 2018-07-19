@@ -125,6 +125,7 @@ build:
   services:
     - name: docker:dind
   script:
+    - echo ${DOCKER_ENV_CI_REGISTRY}
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
