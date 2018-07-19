@@ -71,16 +71,17 @@ quality:
     - ./node_modules/.bin/sonarjs
   except:
     - tags
-#
-# # verifyDefinitions:
-# #   stage: test
-# #   dependencies:
-# #     - install
-# #   script:
-# #     - apic validate definitions/getting-started-product.yaml
-# #   except:
-# #     - tags
-#
+
+verifyDefinitions:
+  stage: test
+  image: spokedev/whale
+  dependencies:
+    - install
+  script:
+    - apic validate definitions/getting-started-product.yaml
+  except:
+    - tags
+
 nodeJsScan:
   stage: test
   allow_failure: true
