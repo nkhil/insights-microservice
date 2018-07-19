@@ -51,7 +51,7 @@ component:
   dependencies:
     - install
   script:
-    - npm run test:component
+    - DAS_URL=http://robohydra:4000 npm run test:component
   except:
     - tags
 
