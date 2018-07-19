@@ -5,6 +5,10 @@ variables:
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
   IMAGE_ROBOHYDRA: ${CI_REGISTRY_IMAGE}/robohydra:latest
 
+services:
+  - name: ${IMAGE_ROBOHYDRA}
+    alias: robohydra
+
 stages:
   - install
   - test
@@ -46,9 +50,9 @@ unit:
 
 component:
   stage: test
-  services:
-    - ${IMAGE_ROBOHYDRA}
-      alias: robohydra
+  # services:
+  #   - ${IMAGE_ROBOHYDRA}
+  #     alias: robohydra
   dependencies:
     - install
   script:
