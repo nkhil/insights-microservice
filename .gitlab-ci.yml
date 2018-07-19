@@ -31,6 +31,7 @@ build_robohydra:
     - docker:stable-dind
   script:
     - cd tests
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build -t ${IMAGE_ROBOHYDRA} .
     - docker push ${IMAGE_ROBOHYDRA}
 
