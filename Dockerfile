@@ -11,7 +11,6 @@ RUN npm install --production
 # Bundle app source
 COPY ./index.js  ./
 COPY ./src ./src/
-COPY ./definitions ./definitions/
 
 EXPOSE 3000
 CMD [ "npm", "start" ]
