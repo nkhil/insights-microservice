@@ -34,6 +34,7 @@ unit:
 
 component:
   stage: test
+  image: node:8.10.0
   dependencies:
     - install
   script:
