@@ -4,43 +4,44 @@ variables:
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
   DOCKER_HOST: tcp://localhost:2375
+  DOCKER_DRIVER: overlay2
 
 stages:
-  - install
-  - test
+  # - install
+  # - test
   - build
   - tag
   - publish
 
-install:
-  stage: install
-  artifacts:
-    paths:
-      - node_modules/
-    expire_in: 15mins
-  script:
-    - npm i
-    - npm install sonarjs
-  except:
-    - tags
+# install:
+#   stage: install
+#   artifacts:
+#     paths:
+#       - node_modules/
+#     expire_in: 15mins
+#   script:
+#     - npm i
+#     - npm install sonarjs
+#   except:
+#     - tags
 
-unit:
-  stage: test
-  dependencies:
-    - install
-  script:
-    - npm run test:unit
-  except:
-    - tags
-
-component:
-  stage: test
-  dependencies:
-    - install
-  script:
-    - npm run test:component
-  except:
-    - tags
+# unit:
+#   stage: test
+#   dependencies:
+#     - install
+#   script:
+#     - npm run test:unit
+#   except:
+#     - tags
+#
+# component:
+#   stage: test
+#   dependencies:
+#     - install
+#   script:
+#     - npm run test:component
+#   except:
+#     - tags
 
 # coverage:
 #   stage: test
@@ -128,7 +129,7 @@ build:
   script:
     - echo ${CI_JOB_TOKEN}
     - echo ${DOCKER_ENV_CI_REGISTRY}
-    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${DOCKER_ENV_CI_REGISTRY}
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build -t ${IMAGE_TRANSIENT} .
     - docker push ${IMAGE_TRANSIENT}
   except:
