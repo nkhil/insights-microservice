@@ -3,6 +3,7 @@ image: spokedev/spoke_runner
 variables:
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
   IMAGE_RELEASE: ${CI_REGISTRY_IMAGE}/release:${CI_BUILD_REF_NAME}
+  IMAGE_ROBOHYDRA: ${CI_REGISTRY_IMAGE}/robohydra:latest
 
 stages:
   - install
@@ -23,6 +24,16 @@ install:
   except:
     - tags
 
+build_robohydra:
+  stage: install
+  image: docker:latest
+  services:
+    - docker:stable-dind
+  script:
+    - cd tests
+    - docker build -t ${IMAGE_ROBOHYDRA} .
+    - docker push ${IMAGE_ROBOHYDRA}
+
 unit:
   stage: test
   dependencies:
@@ -34,6 +45,8 @@ unit:
 
 component:
   stage: test
+  services:
+    - ${IMAGE_ROBOHYDRA}
   dependencies:
     - install
   script:
