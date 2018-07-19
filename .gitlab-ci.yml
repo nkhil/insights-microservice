@@ -1,4 +1,4 @@
-image: spokedev/spoke_runner
+image: node:10.6.0-alpine
 
 variables:
   IMAGE_TRANSIENT: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
@@ -34,7 +34,6 @@ unit:
 
 component:
   stage: test
-  image: node:8.10.0
   dependencies:
     - install
   script:
