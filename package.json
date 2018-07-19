@@ -7,10 +7,7 @@
   },
   "scripts": {
     "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:unitcoverage": "LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/mocha --exit ./tests/unit/*",
-    "test:component": "TEST_MODE=COMPONENT ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
-    "test:coverage": "TEST_MODE=COMPONENT LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
-    "test:feature": "TEST_MODE=FEATURE LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
+    "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
     "audit": "./node_modules/.bin/npm-check && npm audit",
@@ -25,6 +22,7 @@
     "dd-trace": "^0.3.1",
     "express": "^4.16.3",
     "hot-shots": "^5.7.0",
+    "nyc": "^12.0.2",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "validator": "^10.4.0"
