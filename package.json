@@ -6,14 +6,14 @@
     "node": ">=10.6.0"
   },
   "scripts": {
-    "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
+    "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/nyc --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
+    "test:component": "LOG_LEVEL=FATAL ./tests/coverage.sh",
     "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
     "audit": "./node_modules/.bin/npm-check && npm audit",
-    "test": "npm run test:unit",
-    "start": "node index.js",
-    "multi": "npm start & robohydra ./tests/feature/stubs/stub.conf & npm run test:feature"
+    "test": "npm run test:feature",
+    "start": "node index.js"
   },
   "dependencies": {
     "@spokedev/fab_utils": "^1.0.32",
@@ -22,7 +22,6 @@
     "dd-trace": "^0.3.1",
     "express": "^4.16.3",
     "hot-shots": "^5.7.0",
-    "nyc": "^12.0.2",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "validator": "^10.4.0"
@@ -33,7 +32,8 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.11.0",
-    "istanbul": "^1.1.0-alpha.1",
+    "nyc": "^12.0.2",
+    "istanbul-combine": "^0.3.0",
     "mocha": "^5.2.0",
     "nock": "^9.4.2",
     "npm-check": "^5.7.1",

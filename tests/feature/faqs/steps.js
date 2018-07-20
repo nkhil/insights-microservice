@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // cucumber / Gherkin and chai for test steps and assertions
 const { When, Then } = require('cucumber');
 const chai = require('chai');

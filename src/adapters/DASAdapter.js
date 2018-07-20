@@ -7,7 +7,7 @@ const { ServerError } = errors;
 async function getFaqs() {
   logger.invocation();
   try {
-    const response = await rp({
+    return await rp({
       url: `${config.DAS.url}/FAQs`,
       headers: {
         'X-IBM-Client-Id': config.DAS.clientId,
@@ -16,8 +16,6 @@ async function getFaqs() {
       method: 'GET',
       resolveWithFullResponse: true
     });
-    logger.info({ message: 'Successfully Obtained FAQs' });
-    return response;
   } catch (err) {
     // log error as close to occurance as possible
     logger.error({ err, message: 'Error Obtaining FAQs' });

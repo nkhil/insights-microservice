@@ -1,11 +1,3 @@
-/* eslint-disable no-console */
-
-// request-promise for feature testing via API Connect
-const rp = require('request-promise');
-
-// test execution config
-const config = require('../config');
-
 class ResponseStub {
   status(status) {
     this.statusCode = status;
@@ -39,33 +31,6 @@ async function testRouter(router, request) {
   });
 }
 
-async function get(router, url, prodUrl) {
-  let response;
-  if (process.env.TEST_MODE === 'COMPONENT') {
-    // call the router directly
-    console.log(`TEST_EXEC: Calling the router internally at ${url}`);
-    const request = { url, method: 'GET' };
-    response = await testRouter(router, request);
-    console.log('TEST_EXEC: Response from router ===>', response);
-  } else {
-    // call the router externally (via API connect)
-    const apiUrl = prodUrl || url;
-    console.log(`TEST_EXEC: Calling the api externally via URL: ${config.APIConnect.url}${apiUrl}`);
-    response = await rp({
-      url: `${config.APIConnect.url}${apiUrl}`,
-      headers: {
-        'X-IBM-Client-Id': config.APIConnect.clientId,
-        'X-IBM-Client-Secret': config.APIConnect.clientSecret
-      },
-      method: 'GET',
-      resolveWithFullResponse: true
-    });
-    console.log('TEST_EXEC: Response from router ===>', response.statusCode, response.body);
-  }
-  return response;
-}
-
 module.exports = {
-  testRouter,
-  get
+  testRouter
 };

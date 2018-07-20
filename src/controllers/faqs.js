@@ -6,13 +6,9 @@ const { BaseError, InternalError } = errors;
 async function get() {
   logger.invocation();
   try {
-    const response = await das.getFaqs();
-    logger.debug({ message: 'Obtained faqs' });
-    return response;
+    return await das.getFaqs();
   } catch (err) {
     if (err instanceof BaseError) {
-      // debug as error logged at DAS layer.
-      logger.debug({ message: 'Error From DAS Adapter. Returning' });
       throw err;
     }
     // it's important to put the error/message into the object as err/message here.
