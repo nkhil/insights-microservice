@@ -37,18 +37,6 @@ component:
   script:
     - npm run test:component
 
-coverage:
-  stage: test
-  image: node:8.10.0
-  dependencies:
-    - install
-  script:
-    - npm run test:coverage
-  artifacts:
-    paths:
-      - coverage/
-  coverage: '/^Statements\s*:\s*([^%]+)/'
-
 style:
   stage: test
   image: node:8.10.0
