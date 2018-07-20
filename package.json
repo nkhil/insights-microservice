@@ -6,7 +6,7 @@
     "node": ">=10.6.0"
   },
   "scripts": {
-    "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/nyc --clean=false --exclude ./tests --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
+    "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/nyc --exclude ./tests --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
     "test:component": "LOG_LEVEL=FATAL ./tests/component.sh",
     "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
