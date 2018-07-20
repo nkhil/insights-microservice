@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/nyc --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:component": "LOG_LEVEL=FATAL ./tests/coverage.sh",
+    "test:component": "LOG_LEVEL=FATAL ./tests/component.sh",
     "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
