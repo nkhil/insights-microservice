@@ -11,4 +11,4 @@ RUN npm install robohydra
 
 EXPOSE 4000
 
-CMD [ "./node_modules/.bin/robohydra", "hydra.conf" ]
+CMD [ "./node_modules/.bin/robohydra", "stub.conf" ]
