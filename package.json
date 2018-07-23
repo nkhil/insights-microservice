@@ -17,7 +17,7 @@
     "start:stubs": "./node_modules/.bin/robohydra ./tests/feature/remote-stubs/stub.conf"
   },
   "dependencies": {
-    "@spokedev/fab_utils": "^1.0.42",
+    "@spokedev/fab_utils": "^1.0.43",
     "express": "^4.16.3",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
