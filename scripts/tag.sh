@@ -1,5 +1,6 @@
 #!/bin/bash
 VERSION=`cat package.json | jq -r '.version'`
+echo "curl -X \"POST\" \"https://spokedev.githost.io/api/v4/projects/${CI_PROJECT_ID}/repository/tags?tag_name=v${VERSION}&ref=${CI_COMMIT_SHA}\" -H \"PRIVATE-TOKEN: ${GITLAB_TOKEN}\""
 RESULT=`curl -X "POST" "https://spokedev.githost.io/api/v4/projects/${CI_PROJECT_ID}/repository/tags?tag_name=v${VERSION}&ref=${CI_COMMIT_SHA}" -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}"`
 
 if [[ $RESULT = *"already exists"* ]];

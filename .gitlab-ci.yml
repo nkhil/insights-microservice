@@ -161,6 +161,7 @@ publish:
     - ./scripts/save_deploy_files.sh
     - ./scripts/trigger_dev_release.sh
   only:
+    - tags
     - /^v\d+\.\d+\.\d+$/
   except:
     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
