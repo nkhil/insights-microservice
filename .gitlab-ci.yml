@@ -45,7 +45,7 @@ unit:
     - install
   artifacts:
     paths:
-      - coverage/unit
+      - coverage/unit/
     expire_in: 1 week
   script:
     - npm run test:unit
@@ -61,7 +61,7 @@ component:
     - install
   artifacts:
     paths:
-      - coverage/component
+      - coverage/component/
     expire_in: 1 week
   script:
     - DAS_URL=http://robohydra:4000 npm run test:component
