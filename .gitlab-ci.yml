@@ -39,26 +39,23 @@ build_robohydra:
   except:
     - tags
 
-unit:
-  stage: test
-  dependencies:
-    - install
-  script:
-    - npm run test:unit
-  except:
-    - tags
-
-component:
+unit-component:
   stage: test
   services:
     - name: ${IMAGE_ROBOHYDRA}
       alias: robohydra
   dependencies:
     - install
+  artifacts:
+    paths:
+      - coverage/
+    expire_in: 1 week
   script:
+    - npm run test:unit
     - DAS_URL=http://robohydra:4000 npm run test:component
   except:
     - tags
+
 
 style:
   stage: test
@@ -115,6 +112,17 @@ dependency_scanning:
         "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
   artifacts:
     paths: [gl-dependency-scanning-report.json]
+  except:
+    - tags
+
+audit:
+  stage: test
+  dependencies:
+    - install
+  script:
+    - npm install npm@latest -g
+    - npm run audit
+    - npm audit
   except:
     - tags
 
