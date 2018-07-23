@@ -2,36 +2,27 @@ const rp = require('request-promise');
 const { logger, errors } = require('@spokedev/fab_utils');
 const config = require('../config');
 
-const { InvalidParameterError, DuplicateError, ServerError } = errors;
+const { ServerError } = errors;
 
-async function createClient(client) {
-  logger.invocation({ args: { client } });
+async function getFaqs() {
+  logger.invocation();
   try {
-    const response = await rp({
-      url: `${config.DAS.url}/clients`,
-      method: 'POST',
-      body: client,
-      json: true
+    return await rp({
+      url: `${config.DAS.url}/FAQs`,
+      headers: {
+        'X-IBM-Client-Id': config.DAS.clientId,
+        'X-IBM-Client-Secret': config.DAS.clientSecret
+      },
+      method: 'GET',
+      resolveWithFullResponse: true
     });
-    // assume 200 response = success
-    logger.info({ message: 'Successfully Created Client' });
-    return response;
   } catch (err) {
     // log error as close to occurance as possible
-    logger.error({ err, message: 'Error Creating Client' });
-    // handle error cases as needed
-    switch (err.statusCode) {
-      case (400):
-        throw new InvalidParameterError('Invalid Params');
-      case (409):
-        throw new DuplicateError('Client Already Exists');
-      default:
-        throw new ServerError('Something Went Wrong');
-    }
+    logger.error({ err, message: 'Error Obtaining FAQs' });
+    throw new ServerError('Something Went Wrong');
   }
 }
 
-
 module.exports = {
-  createClient
+  getFaqs
 };

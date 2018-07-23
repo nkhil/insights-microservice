@@ -1,52 +1,48 @@
-# Getting Started Microservice
-[![coverage report](https://spokedev.githost.io/fab/getting-started-microservice/badges/develop/coverage.svg)](https://spokedev.githost.io/fab/getting-started-microservice/commits/develop)
+# The 'Chobbers' Test Experiment
 
-[![pipeline status](https://spokedev.githost.io/fab/getting-started-microservice/badges/develop/pipeline.svg)](https://spokedev.githost.io/fab/getting-started-microservice/commits/develop)
+## Test Execution Scripts
 
-This repository provides a template for FAB microservice delivery.
+* **test:unit** - executes standard unit tests in-process with code coverage being output to ./coverage/unit
+* **test:component** - executes feature tests in-process with code coverage being out to ./coverage/component - only stubs need to be running
+* **test:feature** - executes feature tests - server must be started and stubs must be running
 
+## The principles behind this testing experiment is to: 
 
-## Usage
+* use the same 'higher order' tests for local/CI component testing and feature testing post deployment
+* prune the number of potentially 'duplicate' tests / responses
+* maintain code coverage analysis and quality bar
+* maximise test quality component and 'smoke' testing
+* minimise developer testing effort through a smaller number of tests and write once, run many
+* minimise integration testing and issues post deployment 
 
-Fork Template
-Change Project Name in package.json, API & product definitions files and deploy/deployment.yaml
-Push to repository and check pipeline passes. 
+## The test boundary is at the component (aka Service) level which encompasses:
 
+* Routers
+* Controllers
+* Adapters
 
-## Rules
+## The proposed approach:
 
-Changes are to be made in the given folders and follow the router-controller-adapter pattern.
+* feature tests are written using cucumber / gherkin
+* scenarios should cover the main logic flow and what can be tested without 'special circumstances'
+* tests should use common test data / situations
+* 'remote-stubs' are implemented via RoboHydra for dependencies
+    * remote stubs are started in tests/feature/remote-stubs using robohydra stubs.conf
+* traditional 'unit' tests would be implemented to exercise uncovered code
+* unit test stubs are written using Nock for special curcumstances
+* developers execute test:component and without starting the service
+* developers execute test:feature against a running service
+* CD/CD executes test:component and test:unit on push
+* any errors result in failed pipeline
+* During deployment of the service to APIConnect and k8s, CI/CD executes test:feature
+* any errors result in failed post deployment readiness
 
-All code needs test coverage!
+## Next Steps
 
-Code must
-
-## Logs
-
-Log messages should follow the given patterns including naming of messages as `message` and errors as `err`:
-
-Debug messages provide additional context in development
-```
-logger.debug({ message: 'Error From DAS Adapter. Returning' });
-```
-
-Info messages provide production logs of non-error events
-```
-logger.info({ message: 'Successfully Created Client' });
-```
-
-Error messages provide context as close to the source of an error as possible.
-```
-logger.error({ err, message: 'Unhandled Error From DAS Adapter' });
-```
-
-Fatal messages provide details of fatal events. Fatal events should stop the server to fail fast.
-```
-logger.fatal({ err, message: `ERROR LOADING SCHEMAS: ${e.message}` });
-process.exit(1);
-```
-
-
-## Metrics
-
-Metrics are exposed through the metrics module of `fab_utils`. Increment with: `metrics.increment('clients');`
+* implement more complex logic flow and test
+* deployment and execution test
+* setup and tear down of test data
+* request / response validation
+* alternative responses
+* unathorised
+* merge code coverage reports

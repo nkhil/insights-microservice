@@ -4,19 +4,19 @@ class ResponseStub {
     return this;
   }
 
-  location(location) {
-    this.location = location;
-    return this;
-  }
+  // location(location) {
+  //   this.location = location;
+  //   return this;
+  // }
 
   json(body) {
-    this.body = body;
+    this.body = JSON.stringify(body);
     return this;
   }
 
-  end() {
-    return this;
-  }
+  // end() {
+  //   return this;
+  // }
 }
 
 async function testRouter(router, request) {

@@ -1,18 +1,18 @@
 {
-  "name": "@spokedev/getting-started-microservice",
+  "name": "@spokedev/gettingstarted",
   "version": "0.0.3",
   "private": true,
   "engines": {
     "node": ">=10.6.0"
   },
   "scripts": {
-    "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:integration": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/integration/*/*.feature",
-    "test:coverage": "LOG_LEVEL=FATAL ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec --exit ./tests/unit/*",
+    "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/nyc --exclude ./tests --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
+    "test:component": "LOG_LEVEL=FATAL ./tests/component.sh",
+    "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
     "audit": "./node_modules/.bin/npm-check && npm audit",
-    "test": "npm run test:unit",
+    "test": "npm run test:feature",
     "start": "node index.js"
   },
   "dependencies": {
@@ -32,10 +32,11 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.11.0",
-    "istanbul": "^1.1.0-alpha.1",
+    "nyc": "^12.0.2",
     "mocha": "^5.2.0",
     "nock": "^9.4.2",
     "npm-check": "^5.7.1",
+    "robohydra": "^0.6.6",
     "stryker": "^0.24.2",
     "stryker-api": "^0.17.3",
     "stryker-javascript-mutator": "^0.7.3",
