@@ -2,12 +2,12 @@ product: '1.0.0'
 
 info:
   name: gettingstarted
-  title: getting-started
+  title: gettingstarted
   version: "1.0.0"
 
 apis:
   'gettingstarted':
-    $ref: getting-started.yaml
+    $ref: gettingstarted.yaml
 
 visibility:
   view:

@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  x-ibm-name: getting-started
+  x-ibm-name: gettingstarted
   version: 1.0.0
-  title: getting-started
+  title: gettingstarted
 schemes:
   - https
 host: $(catalog.host)
@@ -38,7 +38,7 @@ x-ibm-configuration:
   assembly:
     execute:
       - invoke:
-          target-url: 'http://gettingstarted.${ENV_NAME}.fab.spokedev.xyz$(request.path)$(request.search)'
+          target-url: 'http://gettingstarted.${ENV_NAME}.${TARGET_URL_BASE}$(request.path)$(request.search)'
 paths:
   '/ping':
     get:
