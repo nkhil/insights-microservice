@@ -56,21 +56,6 @@ unit-component:
   except:
     - tags
 
-# component:
-#   stage: test
-#   services:
-#     - name: ${IMAGE_ROBOHYDRA}
-#       alias: robohydra
-#   dependencies:
-#     - install
-#   artifacts:
-#     paths:
-#       - coverage/component/
-#     expire_in: 1 week
-#   script:
-#     - DAS_URL=http://robohydra:4000 npm run test:component
-#   except:
-#     - tags
 
 style:
   stage: test
