@@ -6,41 +6,34 @@
     "node": ">=10.6.0"
   },
   "scripts": {
-    "test:unit": "LOG_LEVEL=FATAL ./node_modules/.bin/nyc --exclude ./tests --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:component": "LOG_LEVEL=FATAL ./tests/component.sh",
+    "test:unit": "LOG_LEVEL=INFO ./node_modules/.bin/nyc --exclude ./tests --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
+    "test:component": "LOG_LEVEL=INFO ./tests/component.sh",
     "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
     "audit": "./node_modules/.bin/npm-check && npm audit",
     "test": "npm run test:feature",
-    "start": "node index.js"
+    "start": "node index.js",
+    "start:stubs": "./node_modules/.bin/robohydra ./tests/feature/remote-stubs/stub.conf"
   },
   "dependencies": {
     "@spokedev/fab_utils": "^1.0.32",
-    "bcrypt": "^2.0.1",
-    "body-parser": "^1.18.3",
-    "dd-trace": "^0.3.1",
     "express": "^4.16.3",
-    "hot-shots": "^5.7.0",
     "request": "^2.87.0",
-    "request-promise": "^4.2.2",
-    "validator": "^10.4.0"
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "cucumber": "^4.2.1",
-    "eslint": "^4.19.1",
+    "eslint": "^5.2.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.11.0",
-    "nyc": "^12.0.2",
     "mocha": "^5.2.0",
     "nock": "^9.4.2",
     "npm-check": "^5.7.1",
+    "nyc": "^12.0.2",
     "robohydra": "^0.6.6",
-    "stryker": "^0.24.2",
-    "stryker-api": "^0.17.3",
-    "stryker-javascript-mutator": "^0.7.3",
-    "stryker-mocha-framework": "^0.10.3",
-    "stryker-mocha-runner": "^0.12.3"
+    "stryker": "^0.25.1",
+    "stryker-api": "^0.18.0"
   }
 }
