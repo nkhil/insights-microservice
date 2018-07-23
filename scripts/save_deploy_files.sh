@@ -12,7 +12,7 @@ checkerror() {
 TOKEN=`curl -X "POST" "https://iam.bluemix.net/oidc/token" \
      -H 'Accept: application/json' \
      -H 'Content-Type: application/x-www-form-urlencoded' \
-     --data-urlencode "apikey=bkq8-t8QZhRwtw31MggGqnoXFScgyh2MZDvzKKJACjAu" \
+     --data-urlencode "apikey=${OS_API_KEY}" \
      --data-urlencode "response_type=cloud_iam" \
      --data-urlencode "grant_type=urn:ibm:params:oauth:grant-type:apikey" \
      | jq -r '.access_token'`
