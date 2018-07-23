@@ -43,6 +43,10 @@ unit:
   stage: test
   dependencies:
     - install
+  artifacts:
+    paths:
+      - coverage/unit/
+    expire_in: 1 week
   script:
     - npm run test:unit
   except:
@@ -55,6 +59,10 @@ component:
       alias: robohydra
   dependencies:
     - install
+  artifacts:
+    paths:
+      - coverage/component/
+    expire_in: 1 week
   script:
     - DAS_URL=http://robohydra:4000 npm run test:component
   except:
