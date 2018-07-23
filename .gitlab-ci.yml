@@ -153,7 +153,7 @@ tag:
 
 publish:
   stage: publish
-  image: docker:latest
+  image: spokedev/whale
   services:
     - name: docker:dind
   dependencies: []
