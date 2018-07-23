@@ -1,19 +1,17 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const { schema, middlewares } = require('@spokedev/fab_utils');
+const { middlewares } = require('@spokedev/fab_utils');
 
 const clientRouter = require('./routers/clients');
 const healthCheckRouter = require('./routers/healthcheck');
 
-schema.configure(`${__dirname}/schemas`);
-
 const app = express();
 
-app.use(bodyParser.json());
+app.use(middlewares.parseRequest());
 app.use(middlewares.trackingInit());
 app.use(middlewares.requestInit());
+app.use(middlewares.schemaValidator(`${__dirname}/../definitions/getting-started.yaml`));
 
-app.use('/gettingstarted/', healthCheckRouter);
+app.use('/gettingstarted', healthCheckRouter);
 app.use('/gettingstarted/clients', clientRouter);
 
 app.use(middlewares.defaultErrorHandler());

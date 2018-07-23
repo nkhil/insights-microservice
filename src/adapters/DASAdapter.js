@@ -14,11 +14,11 @@ async function createClient(client) {
       json: true
     });
     // assume 200 response = success
-    logger.info({ msg: 'Successfully Created Client' });
+    logger.info({ message: 'Successfully Created Client' });
     return response;
   } catch (err) {
     // log error as close to occurance as possible
-    logger.error({ err, msg: 'Error Creating Client' });
+    logger.error({ err, message: 'Error Creating Client' });
     // handle error cases as needed
     switch (err.statusCode) {
       case (400):

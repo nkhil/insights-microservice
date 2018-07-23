@@ -24,26 +24,26 @@ Code must
 
 ## Logs
 
-Log messages should follow the given patterns including naming of messages as `msg` and errors as `err`:
+Log messages should follow the given patterns including naming of messages as `message` and errors as `err`:
 
 Debug messages provide additional context in development
 ```
-logger.debug({ msg: 'Error From DAS Adapter. Returning' });
+logger.debug({ message: 'Error From DAS Adapter. Returning' });
 ```
 
 Info messages provide production logs of non-error events
 ```
-logger.info({ msg: 'Successfully Created Client' });
+logger.info({ message: 'Successfully Created Client' });
 ```
 
 Error messages provide context as close to the source of an error as possible.
 ```
-logger.error({ err, msg: 'Unhandled Error From DAS Adapter' });
+logger.error({ err, message: 'Unhandled Error From DAS Adapter' });
 ```
 
 Fatal messages provide details of fatal events. Fatal events should stop the server to fail fast.
 ```
-logger.fatal({ err, msg: `ERROR LOADING SCHEMAS: ${e.message}` });
+logger.fatal({ err, message: `ERROR LOADING SCHEMAS: ${e.message}` });
 process.exit(1);
 ```
 
