@@ -120,7 +120,7 @@ audit:
   dependencies:
     - install
   script:
-    - npm install --upgrade npm
+    - npm install npm@latest -g
     - npm run audit
     - npm audit
   except:
