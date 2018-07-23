@@ -9,7 +9,7 @@ variables:
 
 stages:
   - install
-  # - test
+  - test
   - build
   - tag
   - publish
