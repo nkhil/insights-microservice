@@ -64,7 +64,7 @@ metadata:
   namespace: fab-${ENV_NAME}
 spec:
   rules:
-  - host: gettingstarted.${ENV_NAME}.fab.spokedev.xyz
+  - host: gettingstarted.${ENV_NAME}.${TARGET_URL_BASE}
     http:
       paths:
       - path: /gettingstarted # Must match basePath in API definition yaml
