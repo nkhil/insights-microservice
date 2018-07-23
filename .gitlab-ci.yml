@@ -65,6 +65,8 @@ component:
     expire_in: 1 week
   script:
     - DAS_URL=http://robohydra:4000 npm run test:component
+    - pwd
+    - ls -la
     - ls -la coverage/
   except:
     - tags
