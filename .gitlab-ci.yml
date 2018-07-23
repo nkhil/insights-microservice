@@ -6,10 +6,6 @@ variables:
   IMAGE_ROBOHYDRA: ${CI_REGISTRY_IMAGE}/robohydra:latest
   DOCKER_DRIVER: overlay2
 
-# services:
-#   - name: ${IMAGE_ROBOHYDRA}
-#     alias: robohydra
-
 stages:
   - install
   - test
@@ -161,6 +157,7 @@ publish:
     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
     - docker push ${IMAGE_RELEASE}
     - ./scripts/save_deploy_files.sh
+    - ./scripts/trigger_dev_release.sh
   only:
     - /^v\d+\.\d+\.\d+$/
   except:
