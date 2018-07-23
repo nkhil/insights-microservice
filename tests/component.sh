@@ -9,3 +9,7 @@ sleep 5
 npm run test:feature
 kill $SERVER_PID
 echo "Done"
+sleep 5
+ls -la
+ls -la coverage/
+echo "Finished"
