@@ -6,14 +6,14 @@
 * **test:component** - executes feature tests in-process with code coverage being out to ./coverage/component - only stubs need to be running
 * **test:feature** - executes feature tests - server must be started and stubs must be running
 
-## The principles behind this testing experiment is to: 
+## The principles behind this testing experiment is to:
 
 * use the same 'higher order' tests for local/CI component testing and feature testing post deployment
 * prune the number of potentially 'duplicate' tests / responses
 * maintain code coverage analysis and quality bar
 * maximise test quality component and 'smoke' testing
 * minimise developer testing effort through a smaller number of tests and write once, run many
-* minimise integration testing and issues post deployment 
+* minimise integration testing and issues post deployment
 
 ## The test boundary is at the component (aka Service) level which encompasses:
 

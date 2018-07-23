@@ -9,7 +9,7 @@ spec:
   ports:
   - port: 3000
     targetPort: 3000
-    name: gettingstarted-${ENV_NAME}
+    name: http
     protocol: TCP
   selector:
     app: gettingstarted-${ENV_NAME}
@@ -18,7 +18,7 @@ apiVersion: apps/v1beta1 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
   name: gettingstarted-${ENV_NAME}
-  namespace: fab-${ENV)NAME}
+  namespace: fab-${ENV_NAME}
   labels:
     app: gettingstarted-${ENV_NAME}
 spec:
@@ -39,7 +39,7 @@ spec:
         - mountPath: /opt/service-bind
           name: service-bind-volume
         ports:
-        - name: gettingstarted-${ENV_NAME}
+        - name: http
           containerPort: 3000
         resources:
           requests:
@@ -64,7 +64,7 @@ metadata:
   namespace: fab-${ENV_NAME}
 spec:
   rules:
-  - host: gettingstarted.${ENV_NAME}.fab.spokedev.xyz
+  - host: gettingstarted.${ENV_NAME}.${TARGET_URL_BASE}
     http:
       paths:
       - path: /gettingstarted # Must match basePath in API definition yaml
