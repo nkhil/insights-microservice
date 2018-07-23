@@ -11,7 +11,7 @@
     "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
-    "audit": "./node_modules/.bin/npm-check && npm audit",
+    "audit": "./node_modules/.bin/npm-check",
     "test": "npm run test:feature",
     "start": "node index.js",
     "start:stubs": "./node_modules/.bin/robohydra ./tests/feature/remote-stubs/stub.conf"
