@@ -36,6 +36,8 @@ build_robohydra:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build -t ${IMAGE_ROBOHYDRA} .
     - docker push ${IMAGE_ROBOHYDRA}
+  except:
+    - tags
 
 unit:
   stage: test
@@ -123,6 +125,8 @@ version:
     - install
   script:
     - ./scripts/check_version_tag.sh
+  except:
+    - tags
 
 build:
   stage: build
