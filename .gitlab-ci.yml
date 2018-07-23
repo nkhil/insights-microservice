@@ -82,7 +82,7 @@ verifyDefinitions:
   dependencies:
     - install
   script:
-    - apic validate definitions/getting-started-product.yaml
+    - apic validate definitions/*-product.yaml
   except:
     - tags
 
