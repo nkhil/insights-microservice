@@ -1,3 +1,0 @@
-[submodule "nodejsscan"]
-  path = tests/nodejsscan
-  url = https://github.com/ajinabraham/NodeJsScan.git
