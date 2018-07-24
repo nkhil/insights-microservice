@@ -153,13 +153,24 @@ build:
   except:
     - tags
 
-tag:
+tag-develop:
   stage: tag
   image: spokedev/whale
   dependencies:
     - build
   script:
-    - ./scripts/tag.sh
+    - ./scripts/tag.sh develop
+  only:
+    - develop
+
+
+tag-master:
+  stage: tag
+  image: spokedev/whale
+  dependencies:
+    - build
+  script:
+    - ./scripts/tag.sh master
   only:
     - master
 
