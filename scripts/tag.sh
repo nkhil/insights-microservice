@@ -8,7 +8,6 @@ else
   exit 1
 fi
 
-exit 1
 # Read and parse version from package.json
 PACKAGE_VERSION=`cat package.json | jq -r '.version'`
 echo "package.json version: v${PACKAGE_VERSION}"
