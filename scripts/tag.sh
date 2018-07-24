@@ -18,7 +18,8 @@ then
   PACKAGE_MINOR=${BASH_REMATCH[2]}
   PACKAGE_PATCH=${BASH_REMATCH[3]}
 else
-  echo "no match"
+  echo "no match - is package.json version format valid?"
+  exit 1
 fi
 
 # Read and parse version from last applied tag on gitlab for this project
@@ -39,7 +40,8 @@ else
     LAST_MINOR=${BASH_REMATCH[2]}
     LAST_PATCH=${BASH_REMATCH[3]}
   else
-    echo "no match"
+    echo "no match - check format of last tag matches v#.#.#"
+    exit 1
   fi
 fi
 
