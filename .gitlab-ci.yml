@@ -9,8 +9,8 @@ variables:
 
 stages:
   - install
-  - test-phase1
-  - test-phase2
+  - test-phase-1
+  - test-phase-2
   - build
   - tag
   - publish
