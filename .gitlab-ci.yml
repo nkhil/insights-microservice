@@ -119,6 +119,7 @@ dependency_scanning:
 
 audit:
   stage: test
+  allow_failure: true
   dependencies:
     - install
   script:
@@ -131,6 +132,7 @@ audit:
 
 version:
   stage: test
+  allow_failure: true
   dependencies:
     - install
   script:
