@@ -56,7 +56,6 @@ unit-component:
   except:
     - tags
 
-
 style:
   stage: test
   dependencies:
@@ -126,17 +125,6 @@ audit:
     - npm install npm@latest -g
     - npm run audit
     - npm audit
-  except:
-    - tags
-
-
-version:
-  stage: test
-  allow_failure: true
-  dependencies:
-    - install
-  script:
-    - ./scripts/check_version_tag.sh
   except:
     - tags
 
