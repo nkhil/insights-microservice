@@ -48,11 +48,11 @@ then
   if [ $PACKAGE_MAJOR -ge $LAST_MAJOR ] && [ $PACKAGE_MINOR -ge $LAST_MINOR ] && [ $PACKAGE_PATCH -gt $LAST_PATCH ]
   then
     echo "Version is OK"
-    VERSION="v${PACKAGE_VERSION}"
+    VERSION="${PACKAGE_VERSION}"
   else
     echo "Incrementing patch version"
     NEW_PATCH=$(($LAST_PATCH + 1))
-    VERSION="v${LAST_MAJOR}.${LAST_MINOR}.${NEW_PATCH}"
+    VERSION="${LAST_MAJOR}.${LAST_MINOR}.${NEW_PATCH}"
   fi
 fi
 
@@ -61,11 +61,11 @@ then
   if [ $PACKAGE_MAJOR -ge $LAST_MAJOR ] && [ $PACKAGE_MINOR -gt $LAST_MINOR ]
   then
     echo "Version is OK"
-    VERSION="v${PACKAGE_VERSION}"
+    VERSION="${PACKAGE_VERSION}"
   else
     echo "Incrementing minor version"
     NEW_MINOR=$(($LAST_MINOR + 1))
-    VERSION="v${LAST_MAJOR}.${NEW_MINOR}.0"
+    VERSION="${LAST_MAJOR}.${NEW_MINOR}.0"
   fi
 fi
 
