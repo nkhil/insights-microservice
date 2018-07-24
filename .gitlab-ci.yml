@@ -24,6 +24,7 @@ install:
   script:
     - npm i
     - npm install sonarjs
+    - ls -la tests
   except:
     - tags
 
