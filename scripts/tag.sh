@@ -61,7 +61,7 @@ then
   if [ $PACKAGE_MAJOR -ge $LAST_MAJOR ] && [ $PACKAGE_MINOR -gt $LAST_MINOR ]
   then
     echo "Version is OK"
-    VERSION="v${PACKAGE_VERSION}
+    VERSION="v${PACKAGE_VERSION}"
   else
     echo "Incrementing minor version"
     NEW_MINOR=$(($LAST_MINOR + 1))
