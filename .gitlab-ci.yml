@@ -89,7 +89,9 @@ nodeJsScan:
   stage: test
   allow_failure: true
   script:
-    - NodeJsScan ./src > ./gl-sast-report.json
+    - git clone https://github.com/ajinabraham/NodeJsScan.git ./tests/nodejsscan
+    - pip install -r ./tests/nodejsscan/requirements.txt
+    - python ./tests/nodejsscan/cli.py -d ./src > ./gl-sast-report.json
     - cat ./gl-sast-report.json
     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi

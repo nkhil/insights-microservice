@@ -35,9 +35,9 @@ spec:
       - name: gettingstarted-${ENV_NAME}
         image: ${IMAGE_RELEASE}
         imagePullPolicy: Always
-        volumeMounts: # Only needed if bluemix service (eg, DB2) access is needed
-        - mountPath: /opt/service-bind
-          name: service-bind-volume
+        # volumeMounts: # Only needed if bluemix service (eg, DB2) access is needed
+        # - mountPath: /opt/service-bind
+        #   name: service-bind-volume
         ports:
         - name: http
           containerPort: 3000
@@ -49,11 +49,11 @@ spec:
         env:
         - name: ENV_NAME
           value: "${ENV_NAME}"
-      volumes: # Only needed if bluemix service (eg, DB2) access is needed
-      - name: service-bind-volume
-        secret:
-          defaultMode: 420
-          secretName: binding-fab-ods-dev
+      # volumes: # Only needed if bluemix service (eg, DB2) access is needed
+      # - name: service-bind-volume
+      #   secret:
+      #     defaultMode: 420
+      #     secretName: binding-fab-ods-dev
       imagePullSecrets:
       - name: regcred
 ---
