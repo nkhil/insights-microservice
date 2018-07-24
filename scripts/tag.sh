@@ -48,6 +48,7 @@ then
   if [ $PACKAGE_MAJOR -ge $LAST_MAJOR ] && [ $PACKAGE_MINOR -ge $LAST_MINOR ] && [ $PACKAGE_PATCH -gt $LAST_PATCH ]
   then
     echo "Version is OK"
+    VERSION="v${PACKAGE_VERSION}"
   else
     echo "Incrementing patch version"
     NEW_PATCH=$(($LAST_PATCH + 1))
@@ -60,6 +61,7 @@ then
   if [ $PACKAGE_MAJOR -ge $LAST_MAJOR ] && [ $PACKAGE_MINOR -gt $LAST_MINOR ]
   then
     echo "Version is OK"
+    VERSION="v${PACKAGE_VERSION}
   else
     echo "Incrementing minor version"
     NEW_MINOR=$(($LAST_MINOR + 1))
@@ -67,7 +69,7 @@ then
   fi
 fi
 
-echo "New version: ${VERSION}"
+echo "New tag: ${VERSION}"
 
 RESULT=`curl -X "POST" "https://spokedev.githost.io/api/v4/projects/${CI_PROJECT_ID}/repository/tags?tag_name=v${VERSION}&ref=${CI_COMMIT_SHA}" -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}"`
 
