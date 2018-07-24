@@ -46,3 +46,18 @@
 * alternative responses
 * unathorised
 * merge code coverage reports
+
+
+## Quick migration steps (detailed doc to follow)
+
+1. replace .gitlab-ci.yml
+2. replace scripts/
+3. replace deploy/
+4. replace tests/ then copy over your service specific test files (more detail needed!)
+4. check repo name/path is an ok string (all lower case)
+5. search/replace deploy/deployment.yaml to replace gettingstarted
+6. definitions/<yourservicename>.yaml set target-url string
+7. check api definitions (basepath, hostname) match deployment.yaml
+8. copy package.json from this repo, edit to change name, version, add your dependencies
+9. add CICD secret variables (ask Matt)
+10. ...?
