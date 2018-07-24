@@ -9,8 +9,8 @@ variables:
 
 stages:
   - install
-  - test1
-  - test2
+  - test-phase1
+  - test-phase2
   - build
   - tag
   - publish
@@ -41,7 +41,7 @@ build_robohydra:
     - tags
 
 unit-component:
-  stage: test1
+  stage: test-phase-1
   services:
     - name: ${IMAGE_ROBOHYDRA}
       alias: robohydra
@@ -58,7 +58,7 @@ unit-component:
     - tags
 
 style:
-  stage: test1
+  stage: test-phase-1
   dependencies:
     - install
   script:
@@ -67,7 +67,7 @@ style:
     - tags
 
 quality:
-  stage: test1
+  stage: test-phase-1
   dependencies:
     - install
   script:
@@ -76,7 +76,7 @@ quality:
     - tags
 
 verifyDefinitions:
-  stage: test1
+  stage: test-phase-1
   image: spokedev/whale
   dependencies:
     - install
@@ -86,7 +86,7 @@ verifyDefinitions:
     - tags
 
 security:
-  stage: test2
+  stage: test-phase-2
   allow_failure: true
   script:
     - git clone https://github.com/ajinabraham/NodeJsScan.git ./tests/nodejsscan
@@ -101,7 +101,7 @@ security:
     - tags
 
 dependency_scanning:
-  stage: test2
+  stage: test-phase-2
   image: docker:latest
   allow_failure: true
   services:
@@ -118,7 +118,7 @@ dependency_scanning:
     - tags
 
 audit:
-  stage: test2
+  stage: test-phase-2
   allow_failure: true
   dependencies:
     - install
