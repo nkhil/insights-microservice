@@ -8,5 +8,5 @@ sleep 5
 npm run test:feature
 kill $SERVER_PID
 sleep 5
-./node_modules/.bin/nyc report
+./node_modules/.bin/nyc report --reporter=text-summary
 echo "Done"
