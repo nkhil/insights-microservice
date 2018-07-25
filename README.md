@@ -1,4 +1,5 @@
 # The 'Chobbers' Test Experiment
+[![coverage report](https://spokedev.githost.io/fab/gettingstarted/badges/develop/coverage.svg)](https://spokedev.githost.io/fab/gettingstarted/commits/develop)
 
 ## Test Execution Scripts
 
