@@ -7,6 +7,7 @@ variables:
   DOCKER_DRIVER: overlay2
   TARGET_URL_BASE: fab.spokedev.xyz
   APIC_DEV_URL_BASE: https://api.us.apiconnect.ibmcloud.com/dingersjigsawxyz-fab-dev
+  DAS_URL: ${APIC_DEV_URL_BASE}/dasg/api
 
 stages:
   - install
@@ -189,7 +190,7 @@ feature-test:
   dependencies: []
   script:
     - npm install
-    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted DAS_URL=${APIC_DEV_URL_BASE}/dasg/api npm run test:feature
+    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted npm run test:feature
   only:
     - tags
     - /^v\d+\.\d+\.\d+$/
