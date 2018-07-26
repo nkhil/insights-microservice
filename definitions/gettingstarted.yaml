@@ -76,6 +76,8 @@ paths:
               $ref: '#/definitions/faq'
 definitions:
   faq:
+    required:
+      - FAQID
     properties:
       FAQID:
         description: Unique faq identifier
@@ -90,7 +92,7 @@ definitions:
       lastUpdated:
         description: The date/time that a faq was last modified
         type: string
-        format: datetime
+        # format: date-time
       lastUpdateBy:
         description: The name of the user that last updated the faq
         type: string

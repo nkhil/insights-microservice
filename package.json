@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test:unit": "LOG_LEVEL=INFO ./node_modules/.bin/nyc --exclude ./tests --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
-    "test:component": "LOG_LEVEL=INFO ./tests/component.sh",
+    "test:component": "RESPONSE_VALIDATION=true LOG_LEVEL=INFO ./tests/component.sh",
     "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
     "lint": "./node_modules/.bin/eslint .",
@@ -17,7 +17,7 @@
     "start:stubs": "./node_modules/.bin/robohydra ./tests/feature/remote-stubs/stub.conf"
   },
   "dependencies": {
-    "@spokedev/fab_utils": "^1.0.43",
+    "@spokedev/fab_utils": "^1.0.48",
     "express": "^4.16.3",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
@@ -29,7 +29,7 @@
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.11.0",
     "mocha": "^5.2.0",
-    "nock": "^9.4.2",
+    "nock": "^9.4.3",
     "npm-check": "^5.7.1",
     "nyc": "^12.0.2",
     "robohydra": "^0.6.6",
