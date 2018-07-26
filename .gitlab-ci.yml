@@ -6,6 +6,7 @@ variables:
   IMAGE_ROBOHYDRA: ${CI_REGISTRY_IMAGE}/robohydra:latest
   DOCKER_DRIVER: overlay2
   TARGET_URL_BASE: fab.spokedev.xyz
+  APIC_DEV_URL_BASE: https://api.us.apiconnect.ibmcloud.com/dingersjigsawxyz-fab-dev
 
 stages:
   - install
@@ -14,6 +15,7 @@ stages:
   - build
   - tag
   - publish
+  - test-feature
 
 install:
   stage: install
@@ -176,6 +178,18 @@ publish:
     - docker push ${IMAGE_RELEASE}
     - ./scripts/save_deploy_files.sh
     - ./scripts/trigger_dev_release.sh
+  only:
+    - tags
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+
+feature-test:
+  stage: test-feature
+  dependencies: []
+  script:
+    - npm install
+    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted npm run test:feature
   only:
     - tags
     - /^v\d+\.\d+\.\d+$/
