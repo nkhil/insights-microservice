@@ -4,7 +4,9 @@ RESPONSE=`curl --request POST -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" https://spo
 PIPELINE_ID=`echo ${RESPONSE} | jq '.id'`
 
 echo "NEW PIPELINE_ID: ${PIPELINE_ID}"
-echo "Waiting for release deployment pipeline to complete. (https://spokedev.githost.io/fab/release/pipelines/${PIPELINE_ID})"
+echo "Waiting for release deployment pipeline to complete.... this may take a few minutes."
+echo "Monitor progress at https://spokedev.githost.io/fab/release/pipelines/${PIPELINE_ID}"
+echo "------------------------------------------------------------------------------------"
 
 COUNT=0
 unset SUCCESS
@@ -12,7 +14,7 @@ while (( $COUNT < $MAX_RETRIES )); do
     let COUNT+=1
     STATUS=`curl --request GET -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" https://spokedev.githost.io/api/v4/projects/368/pipelines/${PIPELINE_ID} | jq -r '.status'`
 
-    if [[ ${STATUS} == "successs" ]]
+    if [[ ${STATUS} == "success" ]]
     then
         SUCCESS="true"
         echo "Break!"
