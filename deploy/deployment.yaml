@@ -49,6 +49,12 @@ spec:
         env:
         - name: ENV_NAME
           value: "${ENV_NAME}"
+        - name: DAS_URL
+          value: "${DAS_URL}"
+        - name: DAS_CLIENT_ID
+          value: "${DAS_CLIENT_ID}"
+        - name: DAS_CLIENT_SECRET
+          value: "${DAS_CLIENT_SECRET}"
       # volumes: # Only needed if bluemix service (eg, DB2) access is needed
       # - name: service-bind-volume
       #   secret:
