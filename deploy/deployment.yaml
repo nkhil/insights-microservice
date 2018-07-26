@@ -55,6 +55,10 @@ spec:
           value: "${DAS_CLIENT_ID}"
         - name: DAS_CLIENT_SECRET
           value: "${DAS_CLIENT_SECRET}"
+        - name: APIC_CLIENT_ID
+          value: "${APIC_CLIENT_ID}"
+        - name: APIC_CLIENT_SECRET
+          value: "${APIC_CLIENT_SECRET}"
       # volumes: # Only needed if bluemix service (eg, DB2) access is needed
       # - name: service-bind-volume
       #   secret:
