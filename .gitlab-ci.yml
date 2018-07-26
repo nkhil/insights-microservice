@@ -189,7 +189,7 @@ feature-test:
   dependencies: []
   script:
     - npm install
-    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted npm run test:feature
+    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted DAS_URL=${APIC_DEV_URL_BASE}/dasg/api npm run test:feature
   only:
     - tags
     - /^v\d+\.\d+\.\d+$/
