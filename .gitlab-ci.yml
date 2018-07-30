@@ -9,6 +9,11 @@ variables:
   APIC_DEV_URL_BASE: https://api.us.apiconnect.ibmcloud.com/dingersjigsawxyz-fab-dev
   DAS_URL: ${APIC_DEV_URL_BASE}/dasg/api
 
+before_script:
+  - set -a
+  - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
+  - source ./secrets-fab.cfg
+
 stages:
   - install
   - test-phase-1
