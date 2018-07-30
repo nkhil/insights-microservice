@@ -37,7 +37,7 @@ install:
 
 build_robohydra:
   stage: install
-  image: docker:latest
+  image: spokedev/whale
   services:
     - docker:stable-dind
   script:
@@ -110,7 +110,7 @@ security:
 
 dependency_scanning:
   stage: test-phase-2
-  image: docker:latest
+  image: spokedev/whale
   allow_failure: true
   services:
     - docker:stable-dind
@@ -139,7 +139,7 @@ audit:
 
 build:
   stage: build
-  image: docker:latest
+  image: spokedev/whale
   dependencies: []
   services:
     - name: docker:dind
