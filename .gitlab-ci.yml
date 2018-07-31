@@ -9,6 +9,11 @@ variables:
   APIC_DEV_URL_BASE: https://api.us.apiconnect.ibmcloud.com/dingersjigsawxyz-fab-dev
   DAS_URL: ${APIC_DEV_URL_BASE}/dasg/api
 
+before_script:
+  - set -a
+  - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
+  - source ./secrets-fab.cfg
+
 stages:
   - install
   - test-phase-1
@@ -32,7 +37,7 @@ install:
 
 build_robohydra:
   stage: install
-  image: docker:latest
+  image: spokedev/whale
   services:
     - docker:stable-dind
   script:
@@ -105,7 +110,7 @@ security:
 
 dependency_scanning:
   stage: test-phase-2
-  image: docker:latest
+  image: spokedev/whale
   allow_failure: true
   services:
     - docker:stable-dind
@@ -134,7 +139,7 @@ audit:
 
 build:
   stage: build
-  image: docker:latest
+  image: spokedev/whale
   dependencies: []
   services:
     - name: docker:dind
