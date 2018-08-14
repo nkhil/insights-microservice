@@ -5,6 +5,7 @@ checkerror() {
   RC=$?
   if [ $RC -ne 0 ]; then
     echo -e "ERROR: $*"
+    kill $SERVER_PID
     exit 1
   fi
 }
