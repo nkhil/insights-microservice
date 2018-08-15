@@ -97,8 +97,6 @@ security:
   stage: test-phase-2
   allow_failure: true
   script:
-    # - git clone https://github.com/ajinabraham/NodeJsScan.git ./tests/nodejsscan
-    # - pip install -r ./tests/nodejsscan/requirements.txt
     - pip install nodejsscan
     - nodejsscan -d ./src > ./gl-sast-report.json
     - cat ./gl-sast-report.json
