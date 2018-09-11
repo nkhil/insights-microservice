@@ -34,6 +34,7 @@ install:
     - npm install sonarjs
   except:
     - tags
+    - schedules
 
 build_robohydra:
   stage: install
@@ -47,6 +48,7 @@ build_robohydra:
     - docker push ${IMAGE_ROBOHYDRA}
   except:
     - tags
+    - schedules
 
 unit-component:
   stage: test-phase-1
@@ -64,6 +66,7 @@ unit-component:
     - DAS_URL=http://robohydra:4000 npm run test:component
   except:
     - tags
+    - schedules
 
 style:
   stage: test-phase-1
@@ -73,6 +76,7 @@ style:
     - npm run lint
   except:
     - tags
+    - schedules
 
 quality:
   stage: test-phase-1
@@ -82,6 +86,7 @@ quality:
     - ./node_modules/.bin/sonarjs
   except:
     - tags
+    - schedules
 
 verifyDefinitions:
   stage: test-phase-1
@@ -92,6 +97,7 @@ verifyDefinitions:
     - apic validate definitions/*-product.yaml
   except:
     - tags
+    - schedules
 
 security:
   stage: test-phase-2
@@ -106,6 +112,7 @@ security:
     paths: [gl-sast-report.json]
   except:
     - tags
+    - schedules
 
 dependency_scanning:
   stage: test-phase-2
@@ -123,6 +130,7 @@ dependency_scanning:
     paths: [gl-dependency-scanning-report.json]
   except:
     - tags
+    - schedules
 
 audit:
   stage: test-phase-2
@@ -135,6 +143,7 @@ audit:
     - npm audit
   except:
     - tags
+    - schedules
 
 build:
   stage: build
@@ -158,6 +167,7 @@ tag-develop:
     - ./scripts/tag.sh develop
   only:
     - develop
+    - schedules
 
 
 tag-master:
@@ -169,6 +179,7 @@ tag-master:
     - ./scripts/tag.sh master
   only:
     - master
+    - schedules
 
 publish:
   stage: publish
@@ -188,6 +199,7 @@ publish:
     - /^v\d+\.\d+\.\d+$/
   except:
     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+    - schedules
 
 feature-test:
   stage: test-feature
@@ -200,6 +212,7 @@ feature-test:
     - /^v\d+\.\d+\.\d+$/
   except:
     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+    - schedules
 
 feature-test-auto:
   stage: test-feature
