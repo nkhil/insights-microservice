@@ -200,3 +200,12 @@ feature-test:
     - /^v\d+\.\d+\.\d+$/
   except:
     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
+
+feature-test-auto:
+  stage: test-feature
+  dependencies: []
+  script:
+    - npm install
+    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted npm run test:feature
+  only:
+    - schedules
