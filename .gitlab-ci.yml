@@ -213,15 +213,7 @@ feature-test:
   only:
     - tags
     - /^v\d+\.\d+\.\d+$/
+    - schedules
   except:
     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
-    - schedules
-
-feature-test-auto:
-  stage: test-feature
-  dependencies: []
-  script:
-    - npm install
-    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted npm run test:feature
-  only:
     - schedules
