@@ -215,5 +215,4 @@ feature-test:
     - /^v\d+\.\d+\.\d+$/
     - schedules
   except:
-    - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
     - schedules
