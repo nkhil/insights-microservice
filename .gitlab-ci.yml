@@ -214,5 +214,3 @@ feature-test:
     - tags
     - /^v\d+\.\d+\.\d+$/
     - schedules
-  except:
-    - schedules
