@@ -26,7 +26,7 @@ fi
 LAST_TAG=`curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" https://spokedev.githost.io/api/v4/projects/${CI_PROJECT_ID}/repository/tags | jq -r '.[0].name'`
 echo "LAST TAG: ${LAST_TAG}"
 
-if [[ $LAST_TAG =~ "null" ]] || [ -z $LAST_TAG ]
+if [[ $LAST_TAG =~ "null" ]] || [ -z $LAST_TAG ] || [[ $LAST_TAG == "" ]]
 then
   echo "No previous tag detected."
   LAST_MAJOR=0
