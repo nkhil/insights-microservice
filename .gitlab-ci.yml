@@ -30,6 +30,7 @@ install:
       - node_modules/
     expire_in: 15mins
   script:
+    - echo ${CI_JOB_TOKEN}
     - npm i
     - npm install sonarjs
   except:
