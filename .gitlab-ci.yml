@@ -11,8 +11,8 @@ variables:
 
 before_script:
   - set -a
-  - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
-  - source ./secrets-fab.cfg
+  # - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
+  # - source ./secrets-fab.cfg
 
 stages:
   - install
@@ -29,8 +29,7 @@ install:
     paths:
       - node_modules/
     expire_in: 15mins
-  script:
-    - echo ${CI_JOB_TOKEN}
+  script:s
     - npm i
     - npm install sonarjs
   except:
