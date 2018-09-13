@@ -29,7 +29,7 @@ install:
     paths:
       - node_modules/
     expire_in: 15mins
-  script:s
+  script:
     - npm i
     - npm install sonarjs
   except:
