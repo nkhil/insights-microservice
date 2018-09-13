@@ -2,6 +2,7 @@
 MAX_RETRIES=100
 #RESPONSE=`curl --request POST -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" https://spokedev.githost.io/api/v4/projects/368/pipeline?ref=develop`
 RESPONSE=`curl --request POST --form "token=$CI_JOB_TOKEN" --form ref=develop https://spokedev.githost.io/api/v4/projects/368/pipeline`
+echo ${RESPONSE}
 PIPELINE_ID=`echo ${RESPONSE} | jq '.id'`
 
 echo "NEW PIPELINE_ID: ${PIPELINE_ID}"
