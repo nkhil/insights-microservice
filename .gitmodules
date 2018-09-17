@@ -1,0 +1,3 @@
+[submodule "helm-template"]
+	path = helm-template
+	url = git@spokedev.githost.io:fab/helm-template.git
