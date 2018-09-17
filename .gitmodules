@@ -1,6 +1,6 @@
 [submodule "helm-template"]
 	path = helm-template
-	url = https://spokedev.githost.io/fab/helm-template.git
+	url = ../helm-template.git
 [submodule "scripts"]
 	path = scripts
-	url = https://spokedev.githost.io/fab/scripts.git
+	url = ../scripts.git
