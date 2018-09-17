@@ -11,6 +11,8 @@ variables:
 
 before_script:
   - set -a
+  - git submodule init
+  - git submodule update
   # - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
   # - source ./secrets-fab.cfg
 
