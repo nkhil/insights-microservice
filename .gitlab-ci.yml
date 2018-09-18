@@ -194,6 +194,7 @@ tag-develop:
     - build
   script:
     - which git || (apk --no-cache add git)
+    - git submodule init
     - git submodule sync --recursive
     - git submodule update --remote --recursive
     - source secrets/decrypt.sh build
