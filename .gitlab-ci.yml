@@ -177,6 +177,7 @@ build:
     - which git || (apk --no-cache add git)
     - cat .gitmodules
     - git config --list
+    - git submodule init
     - git submodule sync --recursive
     - git submodule update --init --remote --recursive
     - source secrets/decrypt.sh deploy
