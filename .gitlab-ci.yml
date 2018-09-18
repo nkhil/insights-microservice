@@ -187,6 +187,7 @@ tag-develop:
   dependencies:
     - build
   script:
+    - which git || (apk --no-cache add git)
     - git submodule sync --recursive
     - git submodule update --remote --recursive
     - ./scripts/tag.sh develop
@@ -202,6 +203,7 @@ tag-master:
   dependencies:
     - build
   script:
+    - which git || (apk --no-cache add git)
     - git submodule sync --recursive
     - git submodule update --remote --recursive
     - ./scripts/tag.sh master
@@ -217,6 +219,7 @@ publish:
     - name: docker:dind
   dependencies: []
   script:
+    - which git || (apk --no-cache add git)
     - git submodule sync --recursive
     - git submodule update --remote --recursive
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
