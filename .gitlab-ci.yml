@@ -14,8 +14,8 @@ before_script:
   - set -a
   # - git submodule init
   # - git submodule update
-  - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
-  - source ./secrets-fab.cfg
+  # - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
+  # - source ./secrets-fab.cfg
 
 stages:
   - install
@@ -226,13 +226,13 @@ publish:
     - /^(?!.*(master|v?\d+\.\d+\.\d+)$).*$/
     - schedules
 
-feature-test:
-  stage: test-feature
-  dependencies: []
-  script:
-    - npm install
-    - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted npm run test:feature
-  only:
-    - tags
-    - /^v\d+\.\d+\.\d+$/
-    - schedules
+# feature-test:
+#   stage: test-feature
+#   dependencies: []
+#   script:
+#     - npm install
+#     - APIC_URL=${APIC_DEV_URL_BASE}/dev/gettingstarted npm run test:feature
+#   only:
+#     - tags
+#     - /^v\d+\.\d+\.\d+$/
+#     - schedules
