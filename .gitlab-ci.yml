@@ -176,8 +176,9 @@ build:
   script:
     - which git || (apk --no-cache add git)
     - cat .gitmodules
+    - git config --list
     - git submodule sync --recursive
-    - git submodule update --remote --recursive
+    - git submodule update --init --remote --recursive
     - source secrets/decrypt.sh deploy
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build -t ${IMAGE_TRANSIENT} .
