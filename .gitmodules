@@ -6,4 +6,4 @@
 	url = ../helm-template.git
 [submodule "secrets"]
 	path = secrets
-	url = https://spokedev.githost.io/fab/secrets.git
+	url = ../secrets.git
