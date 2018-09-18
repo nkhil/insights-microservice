@@ -54,23 +54,23 @@ build_robohydra:
     - tags
     - schedules
 
-code_quality:
-  stage: quality
-  image: docker:stable
-  variables:
-    DOCKER_DRIVER: overlay2
-  allow_failure: true
-  services:
-    - docker:stable-dind
-  script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
-    - docker run
-        --env SOURCE_CODE="$PWD"
-        --volume "$PWD":/code
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/codequality:$SP_VERSION" /code
-  artifacts:
-    paths: [gl-code-quality-report.json]
+# code_quality:
+#   stage: quality
+#   image: docker:stable
+#   variables:
+#     DOCKER_DRIVER: overlay2
+#   allow_failure: true
+#   services:
+#     - docker:stable-dind
+#   script:
+#     - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+#     - docker run
+#         --env SOURCE_CODE="$PWD"
+#         --volume "$PWD":/code
+#         --volume /var/run/docker.sock:/var/run/docker.sock
+#         "registry.gitlab.com/gitlab-org/security-products/codequality:$SP_VERSION" /code
+#   artifacts:
+#     paths: [gl-code-quality-report.json]
 
 unit-component:
   stage: test-phase-1
@@ -110,62 +110,62 @@ quality:
     - tags
     - schedules
 
-verifyDefinitions:
-  stage: test-phase-1
-  image: spokedev/whale
-  dependencies:
-    - install
-  script:
-    - apic validate definitions/*-product.yaml
-  except:
-    - tags
-    - schedules
+# verifyDefinitions:
+#   stage: test-phase-1
+#   image: spokedev/whale
+#   dependencies:
+#     - install
+#   script:
+#     - apic validate definitions/*-product.yaml
+#   except:
+#     - tags
+#     - schedules
 
-security:
-  stage: test-phase-2
-  allow_failure: true
-  script:
-    - pip install nodejsscan
-    - nodejsscan -d ./src > ./gl-sast-report.json
-    - cat ./gl-sast-report.json
-    - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
-    - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
-  artifacts:
-    paths: [gl-sast-report.json]
-  except:
-    - tags
-    - schedules
+# security:
+#   stage: test-phase-2
+#   allow_failure: true
+#   script:
+#     - pip install nodejsscan
+#     - nodejsscan -d ./src > ./gl-sast-report.json
+#     - cat ./gl-sast-report.json
+#     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.mis > 0); then echo "Found Miscellaneous Issues"; exit 1; fi
+#     - if (cat ./gl-sast-report.json | tail -n +4 | jq .total_count.sec > 0); then echo "Found Security Issues"; exit 1; fi
+#   artifacts:
+#     paths: [gl-sast-report.json]
+#   except:
+#     - tags
+#     - schedules
 
-dependency_scanning:
-  stage: test-phase-2
-  image: spokedev/whale
-  allow_failure: true
-  services:
-    - docker:stable-dind
-  script:
-    - docker run
-        --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
-  artifacts:
-    paths: [gl-dependency-scanning-report.json]
-  except:
-    - tags
-    - schedules
+# dependency_scanning:
+#   stage: test-phase-2
+#   image: spokedev/whale
+#   allow_failure: true
+#   services:
+#     - docker:stable-dind
+#   script:
+#     - docker run
+#         --env DEP_SCAN_DISABLE_REMOTE_CHECKS="${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}"
+#         --volume "$PWD:/code"
+#         --volume /var/run/docker.sock:/var/run/docker.sock
+#         "registry.gitlab.com/gitlab-org/security-products/dependency-scanning:11-1-stable" /code
+#   artifacts:
+#     paths: [gl-dependency-scanning-report.json]
+#   except:
+#     - tags
+#     - schedules
 
-audit:
-  stage: test-phase-2
-  allow_failure: true
-  dependencies:
-    - install
-  script:
-    - npm install npm@latest -g
-    - npm run audit
-    - npm audit
-  except:
-    - tags
-    - schedules
+# audit:
+#   stage: test-phase-2
+#   allow_failure: true
+#   dependencies:
+#     - install
+#   script:
+#     - npm install npm@latest -g
+#     - npm run audit
+#     - npm audit
+#   except:
+#     - tags
+#     - schedules
 
 build:
   stage: build
