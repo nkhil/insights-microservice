@@ -14,8 +14,8 @@ before_script:
   - set -a
   # - git submodule init
   # - git submodule update
-  # - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
-  # - source ./secrets-fab.cfg
+  - aws s3 cp s3://xyz.jigsaw.pepperpotts/ ./ --recursive --include "*" --region "eu-west-1";
+  - source ./secrets-fab.cfg
 
 stages:
   - install
@@ -27,32 +27,32 @@ stages:
   - publish
   - test-feature
 
-install:
-  stage: install
-  artifacts:
-    paths:
-      - node_modules/
-    expire_in: 15mins
-  script:
-    - npm i
-    - npm install sonarjs
-  except:
-    - tags
-    - schedules
+# install:
+#   stage: install
+#   artifacts:
+#     paths:
+#       - node_modules/
+#     expire_in: 15mins
+#   script:
+#     - npm i
+#     - npm install sonarjs
+#   except:
+#     - tags
+#     - schedules
 
-build_robohydra:
-  stage: install
-  image: spokedev/whale
-  services:
-    - docker:stable-dind
-  script:
-    - cd tests
-    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker build -t ${IMAGE_ROBOHYDRA} .
-    - docker push ${IMAGE_ROBOHYDRA}
-  except:
-    - tags
-    - schedules
+# build_robohydra:
+#   stage: install
+#   image: spokedev/whale
+#   services:
+#     - docker:stable-dind
+#   script:
+#     - cd tests
+#     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+#     - docker build -t ${IMAGE_ROBOHYDRA} .
+#     - docker push ${IMAGE_ROBOHYDRA}
+#   except:
+#     - tags
+#     - schedules
 
 # code_quality:
 #   stage: quality
@@ -72,43 +72,43 @@ build_robohydra:
 #   artifacts:
 #     paths: [gl-code-quality-report.json]
 
-unit-component:
-  stage: test-phase-1
-  services:
-    - name: ${IMAGE_ROBOHYDRA}
-      alias: robohydra
-  dependencies:
-    - install
-  artifacts:
-    paths:
-      - coverage/
-    expire_in: 1 week
-  script:
-    - npm run test:unit
-    - DAS_URL=http://robohydra:4000 npm run test:component
-  except:
-    - tags
-    - schedules
+# unit-component:
+#   stage: test-phase-1
+#   services:
+#     - name: ${IMAGE_ROBOHYDRA}
+#       alias: robohydra
+#   dependencies:
+#     - install
+#   artifacts:
+#     paths:
+#       - coverage/
+#     expire_in: 1 week
+#   script:
+#     - npm run test:unit
+#     - DAS_URL=http://robohydra:4000 npm run test:component
+#   except:
+#     - tags
+#     - schedules
 
-style:
-  stage: test-phase-1
-  dependencies:
-    - install
-  script:
-    - npm run lint
-  except:
-    - tags
-    - schedules
+# style:
+#   stage: test-phase-1
+#   dependencies:
+#     - install
+#   script:
+#     - npm run lint
+#   except:
+#     - tags
+#     - schedules
 
-quality:
-  stage: test-phase-1
-  dependencies:
-    - install
-  script:
-    - ./node_modules/.bin/sonarjs
-  except:
-    - tags
-    - schedules
+# quality:
+#   stage: test-phase-1
+#   dependencies:
+#     - install
+#   script:
+#     - ./node_modules/.bin/sonarjs
+#   except:
+#     - tags
+#     - schedules
 
 # verifyDefinitions:
 #   stage: test-phase-1
