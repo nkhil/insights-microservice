@@ -1,6 +1,9 @@
-[submodule "helm-template"]
-	path = helm-template
-	url = ../helm-template.git
+[submodule "secrets"]
+	path = secrets
+	url = ../secrets.git
 [submodule "scripts"]
 	path = scripts
 	url = ../scripts.git
+[submodule "helm-template"]
+	path = helm-template
+	url = ../helm-template.git

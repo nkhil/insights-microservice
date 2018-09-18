@@ -190,6 +190,7 @@ tag-develop:
     - which git || (apk --no-cache add git)
     - git submodule sync --recursive
     - git submodule update --remote --recursive
+    - source secrets/decrypt.sh build
     - ./scripts/tag.sh develop
   only:
     - develop
@@ -206,6 +207,7 @@ tag-master:
     - which git || (apk --no-cache add git)
     - git submodule sync --recursive
     - git submodule update --remote --recursive
+    - source secrets/decrypt.sh build
     - ./scripts/tag.sh master
   only:
     - master
@@ -222,6 +224,7 @@ publish:
     - which git || (apk --no-cache add git)
     - git submodule sync --recursive
     - git submodule update --remote --recursive
+    - source secrets/decrypt.sh deploy
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker pull ${IMAGE_TRANSIENT}
     - docker tag ${IMAGE_TRANSIENT} ${IMAGE_RELEASE}
