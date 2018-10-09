@@ -40,7 +40,7 @@ x-ibm-configuration:
       - invoke:
           target-url: 'http://gettingstarted.${ENV_NAME}.${TARGET_URL_BASE}$(request.path)$(request.search)'
 paths:
-  '/ping':
+  '/healthcheck/ping':
     get:
       tags:
         - Ping
@@ -50,7 +50,7 @@ paths:
         '200':
           description: Microservice is alive
       deprecated: false
-  '/ready':
+  '/healthcheck/ready':
     get:
       tags:
         - Ready

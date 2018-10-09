@@ -9,7 +9,7 @@ chai.should();
 
 When('I call GET /ping', async () => {
   this.response = await rp({
-    url: `${config.APIConnect.url}/ping`,
+    url: `${config.APIConnect.url}/healthcheck/ping`,
     headers: {
       'X-IBM-Client-Id': config.APIConnect.clientId,
       'X-IBM-Client-Secret': config.APIConnect.clientSecret
@@ -25,7 +25,7 @@ Then('GET /ping should return the status code, 200', async () => {
 
 When('I call GET /ready', async () => {
   this.response = await rp({
-    url: `${config.APIConnect.url}/ready`,
+    url: `${config.APIConnect.url}/healthcheck/ready`,
     headers: {
       'X-IBM-Client-Id': config.APIConnect.clientId,
       'X-IBM-Client-Secret': config.APIConnect.clientSecret
