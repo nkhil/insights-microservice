@@ -11,7 +11,7 @@ app.use(middlewares.trackingInit());
 app.use(middlewares.requestInit());
 app.use(middlewares.schemaValidator(`${__dirname}/../definitions/gettingstarted.yaml`));
 
-app.use('/gettingstarted', healthCheckRouter);
+app.use('/gettingstarted/healthcheck', healthCheckRouter);
 app.use('/gettingstarted/faqs', faqRouter);
 
 app.use(middlewares.defaultErrorHandler());
