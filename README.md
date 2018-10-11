@@ -62,5 +62,3 @@
 8. copy package.json from this repo, edit to change name, version, add your dependencies
 9. add CICD secret variables (ask Matt)
 10. ...?
-
-Last updated by Phil
