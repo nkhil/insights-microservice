@@ -7,11 +7,3 @@ Feature: Healthchecks
     Examples:
     | status |
     | 200    |
-
-  Scenario Outline: I can understand the readiness of the service
-    When I call GET /ready
-    Then GET /ready should return the status code, <status>
-
-    Examples:
-    | status |
-    | 200    |

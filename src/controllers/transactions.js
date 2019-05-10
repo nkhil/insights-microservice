@@ -9,7 +9,7 @@ const list = async () => {
     // only log the error if it hasn't already been caught and logged
     let error = err;
     if (!(err instanceof ServiceError)) {
-      console.log({ err, message: 'Internal Server Error' });
+      console.log({ err: err.message, message: 'Internal Server Error' });
       error = new ServiceError(err);
     }
     throw error;

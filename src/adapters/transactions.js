@@ -18,7 +18,7 @@ const list = async () => {
     return response.body;
   } catch (err) {
     // log error as close to occurance as possible
-    console.log({ err, message: 'Error Obtaining Transactions' });
+    console.log({ err: err.message, message: 'Error Obtaining Transactions' });
     throw new ServiceError(err);
   }
 };
