@@ -8,6 +8,7 @@
       "error",
       "never"
     ],
+    "no-console": "off",
     "no-underscore-dangle" : "off",
     "strict": "off",
     "complexity": ["warn", 10]

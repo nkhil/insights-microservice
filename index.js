@@ -1,6 +1,4 @@
-const { gracefulShutdown } = require('@spokedev/fab_utils');
 const config = require('./src/config');
-const app = require('./src');
+const app = require('./src/index');
 
-const server = app.listen(config.express.port);
-gracefulShutdown(server);
+app.listen(config.express.port);

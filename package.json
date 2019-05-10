@@ -1,12 +1,12 @@
 {
-  "name": "@spokedev/gettingstarted",
-  "version": "0.0.20",
+  "name": "microservice",
+  "version": "0.0.1",
   "private": true,
   "engines": {
     "node": ">=10.6.0"
   },
   "scripts": {
-    "test:unit": "LOG_LEVEL=INFO ./node_modules/.bin/nyc --exclude ./tests --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
+    "test:unit": "LOG_LEVEL=INFO ./node_modules/.bin/nyc --reporter=lcov --report-dir=./coverage/unit ./node_modules/.bin/mocha --reporter spec --exit ./tests/unit/*",
     "test:component": "RESPONSE_VALIDATION=true LOG_LEVEL=INFO ./tests/component.sh",
     "test:feature": "LOG_LEVEL=FATAL ./node_modules/.bin/cucumber-js ./tests/feature/*/*.feature",
     "test:stryker": "./node_modules/.bin/stryker run",
@@ -16,24 +16,31 @@
     "start": "node index.js",
     "start:stubs": "./node_modules/.bin/robohydra ./tests/feature/remote-stubs/stub.conf"
   },
+  "nyc": {
+    "exclude": [
+      "**/eft-swift-parser/**",
+      "**/events/**",
+      "**/fab_utils/**",
+      "**/node_modules/**",
+      "**/tests/**"
+    ]
+  },
   "dependencies": {
-    "@spokedev/fab_utils": "^1.0.48",
+    "body-parser": "^1.19.0",
     "express": "^4.16.3",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "cucumber": "^4.2.1",
+    "cucumber": "^5.1.0",
     "eslint": "^5.2.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.11.0",
-    "mocha": "^5.2.0",
-    "nock": "^9.4.3",
+    "mocha": "^6.1.4",
+    "nock": "^10.0.6",
     "npm-check": "^5.7.1",
-    "nyc": "^12.0.2",
-    "robohydra": "^0.6.6",
-    "stryker": "^0.25.1",
-    "stryker-api": "^0.18.0"
+    "nyc": "^14.1.1",
+    "robohydra": "^0.6.6"
   }
 }

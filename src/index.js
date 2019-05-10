@@ -1,20 +1,13 @@
 const express = require('express');
-const { middlewares } = require('@spokedev/fab_utils');
-
-const faqRouter = require('./routers/faqs');
+const middlewares = require('../middlewares');
+const transactionsRouter = require('./routers/transactions');
 const healthCheckRouter = require('./routers/healthcheck');
 
 const app = express();
 
 app.use(middlewares.parseRequest());
-app.use(middlewares.trackingInit());
-app.use(middlewares.requestInit());
-app.use(middlewares.schemaValidator(`${__dirname}/../definitions/gettingstarted.yaml`));
 
-app.use('/gettingstarted/healthcheck', healthCheckRouter);
-app.use('/gettingstarted/faqs', faqRouter);
-
-app.use(middlewares.defaultErrorHandler());
-app.use(middlewares.logsClose());
+app.use('/healthcheck', healthCheckRouter);
+app.use('/transactions', transactionsRouter);
 
 module.exports = app;
