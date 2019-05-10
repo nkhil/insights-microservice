@@ -1,9 +1,10 @@
 // cucumber / Gherkin and chai for test steps and assertions
-const { When, Then } = require('cucumber');
+const { When, Then, setDefaultTimeout } = require('cucumber');
 const chai = require('chai');
-
 const rp = require('request-promise');
 const config = require('../../config');
+
+setDefaultTimeout(20 * 1000);
 
 chai.should();
 
