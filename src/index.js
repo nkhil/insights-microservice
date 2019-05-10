@@ -7,7 +7,7 @@ const app = express();
 
 app.use(middlewares.parseRequest());
 
-app.use('/healthcheck', healthCheckRouter);
-app.use('/transactions', transactionsRouter);
+app.use('/insights/healthcheck', healthCheckRouter);
+app.use('/insights/transactions', transactionsRouter);
 
 module.exports = app;
