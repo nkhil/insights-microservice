@@ -44,13 +44,13 @@ module.exports = {
 Usage:
 
 ```javascript
-//
+//router.js
 const transactions = await controllers.transactions.list();
 ```
 
 ## Using middleware
 
-Middleware is declared in the `middlewares/inde.js` file. What qualifies as middleware ?tk (is it when you write a function to send a request through?)
+Middleware is declared in the `middlewares/index.js` file. What qualifies as middleware ?tk (is it when you write a function to send a request through?)
 
 ## Linting
 
