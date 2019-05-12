@@ -2,7 +2,7 @@
 
 ## Code
 
-### File patterns
+### File export patterns
 
 Using `index.js` files in folders to export the content of the folders.
 
@@ -41,7 +41,50 @@ module.exports = {
 };
 ```
 
+Usage:
+
+```javascript
+//
+const transactions = await controllers.transactions.list();
+```
+
+## Using middleware
+
+Middleware is declared in the `middlewares/inde.js` file. What qualifies as middleware ?tk (is it when you write a function to send a request through?)
+
+## Linting
+
+```javascript
+
+//"off" in any of the options below will turn a rule off.
+
+{
+  "extends": "airbnb-base", //Configuring ESLint to follow the Airbnb style guide (as per the installed `eslint-config-airbnb-base` dependency)
+  "plugins": [
+    "import" //Refers to the installed eslint-plugin-import dependency
+  ],
+  "rules": {
+    "comma-dangle": [
+      "error",  //throws errors on trailing commas in objects
+      "never" //"never" (default) disallows trailing commas
+    ],
+    "no-console": "off", //throws error on console logs being present (when turned on) ?tk
+    "no-underscore-dangle" : "off", //eliminate the use of dangling underscores in identifiers (variables, functions)
+    "strict": "off", //disallows strict mode directives
+    "complexity": ["warn", 10] //This rule is aimed at reducing code complexity by capping the amount of cyclomatic complexity allowed in a program. As such, it will warn when the cyclomatic complexity crosses the configured threshold (default is 20).
+  },
+  "env": { //specify environments for eslint to be active in ?tk
+    "browser": false,
+    "commonjs": true,
+    "es6": true,
+    "mocha": true
+  }
+}
+```
+
 ## Testing
+
+### Test coverage handled by [nyc](https://www.npmjs.com/package/nyc)
 
 ### Using [nock](https://github.com/nock/nock) for server mocking.
 
